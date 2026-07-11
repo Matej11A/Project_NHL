@@ -1,0 +1,7 @@
+for key, value in data.items():
+    if isinstance(value, list):
+        print(f"LIST        | {key} ({len(value)} rows)")
+    elif isinstance(value, dict):
+        print(f"DICT        | {key} (keys: {list(value.keys())})")
+    else:
+        print(f"SINGLE VALUE| {key} = {value}")

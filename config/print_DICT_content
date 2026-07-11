@@ -1,0 +1,4 @@
+for key, value in data.items():
+    if isinstance(value, dict):
+        print(f"\n{key}:")
+        print(json.dumps(value, indent=2))
