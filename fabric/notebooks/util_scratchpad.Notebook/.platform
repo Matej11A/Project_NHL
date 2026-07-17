@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "util_scratchpad"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "72ef574d-fad6-a78b-4fbb-c18a24251ff0"
+  }
+}

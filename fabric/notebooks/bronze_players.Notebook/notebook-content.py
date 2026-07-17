@@ -114,7 +114,7 @@ for player_id in all_player_ids:
     raw = client.stats.player_career_stats(player_id=str(player_id))
     raw_rows.append({
         "player_id": player_id,
-        "frachise_id": TEAM_FRANCHISE_ID,
+        "franchise_id": TEAM_FRANCHISE_ID,
         "raw_json": json.dumps(raw)
     })
 
@@ -131,7 +131,7 @@ print(f"\nDone - {len(raw_rows)} players fetched")
 
 bronze_schema = StructType([
     StructField("player_id", StringType(), True),
-    StructField("frachise_id", StringType(), True),
+    StructField("franchise_id", StringType(), True),
     StructField("raw_json", StringType(), True),
 ])
 
