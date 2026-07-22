@@ -116,3 +116,18 @@ goalies_inferred.printSchema()
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+games_rdd = spark.read.table("bronze.fact_games").select("raw_json").rdd.map(lambda row: row["raw_json"])
+games_inferred = spark.read.json(games_rdd)
+games_inferred.printSchema()
+
+games_inferred.show(1, truncate=False, vertical=True)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
