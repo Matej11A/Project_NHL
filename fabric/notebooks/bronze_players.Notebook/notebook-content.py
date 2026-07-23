@@ -148,3 +148,24 @@ print(f"Saved bronze.dim_players table with {df_bronze.count()} rows!")
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+sample_json = (
+    spark.table("bronze.dim_players")
+    .orderBy(F.col("_ingested_at").desc())
+    .limit(1)
+    .select("raw_json")
+    .collect()[0]["raw_json"]
+)
+import json
+parsed = json.loads(sample_json)
+print(list(parsed.keys()))          # does "seasonTotals" appear at top level?
+print(parsed.get("seasonTotals"))   # if it does, what shape is it?
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

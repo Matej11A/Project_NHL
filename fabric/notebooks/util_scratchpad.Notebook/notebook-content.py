@@ -131,3 +131,31 @@ games_inferred.show(1, truncate=False, vertical=True)
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+season_rdd = spark.read.table("bronze.dim_players").select("raw_json").rdd.map(lambda row: row["raw_json"])
+season_inferred = spark.read.json(season_rdd)
+season_inferred.printSchema()
+
+season_inferred.show(1, truncate=False, vertical=True)
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+from pyspark.sql import functions as F
+season_inferred.select(F.explode("seasonTotals").alias("s")).select("s.timeOnIce", "s.avgToi").filter("s.timeOnIce IS NOT NULL").show(5)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
