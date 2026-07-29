@@ -20,9 +20,18 @@
 # META   }
 # META }
 
-# PARAMETERS CELL ********************
+# CELL ********************
 
-ingestion_date = None
+%pip install nhl-api-py
+
+from nhlpy import NHLClient
+import json
+import os
+from datetime import date
+import notebookutils.mssparkutils as mssparkutils 
+
+client = NHLClient()
+data = client.teams.teams()
 
 # METADATA ********************
 
@@ -33,28 +42,22 @@ ingestion_date = None
 
 # CELL ********************
 
-from pyspark.sql import functions as F
-import json
-from datetime import date
-
-if ingestion_date is None:
-    ingestion_date = date.today().isoformat()
-
+ingestion_date = date.today().isoformat()
 raw_path = f"/lakehouse/default/Files/raw/nhl_teams/{ingestion_date}/teams.json"
 
-with open(raw_path, "r") as f:
-    data = json.load(f)
+os.makedirs(os.path.dirname(raw_path), exist_ok=True)
 
-df_bronze = spark.createDataFrame(data)
+with open (raw_path, "w") as f:
+    json.dump(data, f)
 
-df_bronze = (
-    df_bronze
-    .withColumn("_ingested_at", F.current_timestamp())
-    .withColumn("_raw_file_path", F.lit(raw_path))
+print(f"Wrote raw teams JSON to {raw_path}")
+
+
+mssparkutils.notebook.run(
+    "bronze_nhl_teams",
+    90,
+    {"ingestions_date": ingestion_date}
 )
-
-df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.dim_nhl_teams")
-print(f"Saved bronze.dim_nhl_teams with {df_bronze.count()} rows!")
 
 # METADATA ********************
 

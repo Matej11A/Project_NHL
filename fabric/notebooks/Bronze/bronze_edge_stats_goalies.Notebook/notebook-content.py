@@ -24,9 +24,10 @@
 
 # # notebook to pull raw edge stats data for ANA goalies
 
-# CELL ********************
+# PARAMETERS CELL ********************
 
-%pip install nhl-api-py
+ingestion_date = None
+season = None 
 
 # METADATA ********************
 
@@ -38,90 +39,45 @@
 # CELL ********************
 
 import json
-import time
-from nhlpy import NHLClient
+from datetime import date
 from pyspark.sql import functions as F
-from pyspark.sql.types import StructType, StructField, StringType, TimestampType
+from pyspark.sql.types import StructType, StructField, StringType
+import notebookutils.mssparkutils as mssparkutils
 
-client =  NHLClient()
+if ingestion_date is None:
+    ingestion_date = date.today().isoformat()
+if season is None:
+    season = "20242025"
 
-# METADATA ********************
+edge_dir = f"/lakehouse/default/Files/raw/edge_stats_goalies/player_edge/{season}/{ingestion_date}"
 
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
+with open(f"{edge_dir}/_player_meta.json", "r") as f:
+    player_meta = {row["player_id"]: row for row in json.load(f)}
 
-# CELL ********************
-
-SEASON = "20242025"
-TEAM_ABBR = "ANA"
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-print(f"1. Fetching {SEASON} roster for {TEAM_ABBR}...")
-roster = client.teams.team_roster(team_abbr=TEAM_ABBR, season=SEASON)
-
-goalies = roster.get("goalies", [])
-print(f"   Found {len(goalies)} goalies on the roster.")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
+raw_files = mssparkutils.fs.ls(f"file:{edge_dir}")
 
 raw_edge_rows = []
-
-print("\n2. Pulling live Goalie EDGE profiles...")
-for idx, goalie in enumerate(goalies, start=1):
-    player_id = goalie.get("id")
-    first_name = goalie.get("firstName", {}).get("default", "")
-    last_name = goalie.get("lastName", {}).get("default", "")
-    player_name = f"{first_name} {last_name}".strip()
-
-    if not player_id:
+for file_info in raw_files:
+    if file_info.name == "_player_meta.json":
         continue
 
-    print(f"   [{idx}/{len(goalies)}] Extracting Goalie: {player_name}")
+    player_id = int(file_info.name.replace(".json", ""))
+    local_path = f"{edge_dir}/{file_info.name}"
 
-    try:
-        raw_edge_data = client.edge.goalie_detail(player_id=int(player_id), season=SEASON)
+    with open(local_path, "r") as f:
+        raw_edge_data = json.load(f)
 
-        if raw_edge_data:
-            raw_edge_rows.append({
-                "player_id": player_id,
-                "player_name": player_name,
-                "position_code": goalie.get("positionCode", "G"),
-                "season": SEASON,
-                "raw_json": json.dumps(raw_edge_data)
-            })
+    meta = player_meta.get(player_id, {})
+    raw_edge_rows.append({
+        "player_id": player_id,
+        "player_name": meta.get("player_name"),
+        "position_code": meta.get("position_code", "G"),
+        "season": season,
+        "raw_json": json.dumps(raw_edge_data),
+        "_raw_file_path": local_path,
+    })
 
-    except Exception as player_err:
-        print(f"    Could not fetch data for {player_name}: {player_err}")
-
-    time.sleep(0.2)  
-
-print(f"\nDone - {len(raw_edge_rows)} goalie EDGE profiles fetched")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
+print(f"Loaded {len(raw_edge_rows)} goalie EDGE profiles from raw files")
 
 bronze_schema = StructType([
     StructField("player_id", StringType(), True),
@@ -129,13 +85,13 @@ bronze_schema = StructType([
     StructField("position_code", StringType(), True),
     StructField("season", StringType(), True),
     StructField("raw_json", StringType(), True),
+    StructField("_raw_file_path", StringType(), True)
 ])
 
 df_bronze = spark.createDataFrame(raw_edge_rows, schema=bronze_schema)
 df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
 
 df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.fact_edge_stats_goalies")
-
 print(f"Saved bronze.fact_edge_stats_goalies table with {df_bronze.count()} rows!")
 
 # METADATA ********************

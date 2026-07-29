@@ -20,32 +20,22 @@
 # META   }
 # META }
 
-# MARKDOWN ********************
-
-# # notebook to pull games data and advance watermark at the end
-
-# CELL ********************
-
-%pip install nhl-api-py
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
 # CELL ********************
 
 import json
-from nhlpy import NHLClient
+from datetime import date
 from pyspark.sql import functions as F
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, TimestampType
 
-client = NHLClient()
 
-TEAM_ABBR = "ANA"
-SEASON = "20242025"
+if ingestion_date is None:
+    ingestion_date =date.today().isoformat()
+if season is None:
+    season = "20242025"
+if team_abbr is None:
+    team_abbr = "ANA"
+if raw_path is None:
+    raw_path = f"/lakehouse/default/Files/raw/games/{SEASON}/{ingestion_date}/schedule.json"
 
 # METADATA ********************
 
@@ -57,6 +47,12 @@ SEASON = "20242025"
 # CELL ********************
 
 SOURCE_ENTITY = "fact_games"
+
+with open(raw_path, "r") as f:
+    schedule = json.load(f)
+
+all_games = schedule.get("games", [])
+print(f"Full season schedule loaded from raw file: {len(all_games)} games")
 
 watermark_row = (
     spark.read.table("dbo.control_table")
@@ -73,20 +69,6 @@ else:
     current_watermark = "1900-01-01"
     print("No watermark found - this is the first run, will pull everything")
 
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-schedule = client.schedule.team_season_schedule(team_abbr=TEAM_ABBR, season=SEASON)
-all_games = schedule.get("games", [])
-
-print(f"Full season schedule returned {len(all_games)} games")
 
 # METADATA ********************
 
@@ -122,8 +104,8 @@ raw_game_rows = [
         "game_id": str(game.get("id")),
         "game_date": game.get("gameDate"),
         "game_state": game.get("gameState"),
-        "season": SEASON,
-        "team_abbr": TEAM_ABBR,
+        "season": season,
+        "team_abbr": team_abbr,
         "raw_json": json.dumps(game)
     }
     for game in new_or_updated_games
@@ -150,12 +132,17 @@ bronze_schema = StructType([
 ])
 
 df_new =spark.createDataFrame(raw_game_rows, schema=bronze_schema)
-df_new = df_new.withColumn("_ingested_at", F.current_timestamp())
+df_new = (
+    df_new
+    .withColumn("_ingested_at", F.current_timestamp())
+    .withColumn("_raw_file_path", F.lit(raw_path))
+)
 
 if not spark.catalog.tableExists("bronze.fact_games"):
     df_new.write.format("delta").saveAsTable("bronze.fact_games")
     print(f"Created bronze.fact_games with {df_new.count()} rows")
 else:
+    spark.conf.set("spark.databricks.delta.schema.autoMerge.enabled", "true")
     df_new.createOrReplaceTempView("new_games")
     spark.sql("""
         MERGE INTO bronze.fact_games AS target

@@ -1,11 +1,11 @@
 table fact_games
-	lineageTag: f13a598a-a544-4167-bca6-a3db56d3172d
+	lineageTag: ff508f74-9e8f-4fc1-aca4-f89af62d86ef
 	sourceLineageTag: [gold].[fact_games]
 
 	column id
 		dataType: int64
 		formatString: 0
-		lineageTag: d8a18efa-cf5c-48ea-97a6-d2e713a01776
+		lineageTag: c76fae8a-36c2-41bb-8fcb-0abc0d8b3efb
 		sourceLineageTag: id
 		summarizeBy: sum
 		sourceColumn: id
@@ -15,7 +15,7 @@ table fact_games
 	column season
 		dataType: int64
 		formatString: 0
-		lineageTag: ac733f3e-d0d0-4089-b0e5-82186c7de42c
+		lineageTag: ea9d056c-f792-466d-9f7f-a2d78fc0c9b4
 		sourceLineageTag: season
 		summarizeBy: sum
 		sourceColumn: season
@@ -25,7 +25,7 @@ table fact_games
 	column game_date
 		dataType: dateTime
 		formatString: General Date
-		lineageTag: 862b36af-4c49-41d5-82af-005c77ea3124
+		lineageTag: 6d9adcc5-5959-4139-a0b9-adc051a36862
 		sourceLineageTag: game_date
 		summarizeBy: none
 		sourceColumn: game_date
@@ -35,7 +35,7 @@ table fact_games
 	column game_type
 		dataType: int64
 		formatString: 0
-		lineageTag: b2dc6dea-6450-4383-a52f-7fd5b9a80656
+		lineageTag: bf85b533-a8a0-429e-8cdd-3a2d885445a7
 		sourceLineageTag: game_type
 		summarizeBy: sum
 		sourceColumn: game_type
@@ -44,7 +44,7 @@ table fact_games
 
 	column game_state
 		dataType: string
-		lineageTag: b81d3693-4415-42f4-98e5-9247f10ae410
+		lineageTag: 8b7ff820-b476-4e0b-94ad-c3762343bfa4
 		sourceLineageTag: game_state
 		summarizeBy: none
 		sourceColumn: game_state
@@ -53,7 +53,7 @@ table fact_games
 
 	column game_scheduled_state
 		dataType: string
-		lineageTag: 14d9773d-08d7-460f-a317-b7706cb94cdb
+		lineageTag: e43c6e96-9c64-47d4-b54f-943d8c997008
 		sourceLineageTag: game_scheduled_state
 		summarizeBy: none
 		sourceColumn: game_scheduled_state
@@ -62,7 +62,7 @@ table fact_games
 
 	column home_team_abbrev
 		dataType: string
-		lineageTag: e45b8f85-7a9d-4983-ad4a-3e8dd41f1ab7
+		lineageTag: 5a1a8396-8bac-4c2a-a69d-316433160683
 		sourceLineageTag: home_team_abbrev
 		summarizeBy: none
 		sourceColumn: home_team_abbrev
@@ -72,7 +72,7 @@ table fact_games
 	column home_team_score
 		dataType: int64
 		formatString: 0
-		lineageTag: a6c311ef-9130-4ce5-bdd1-0a4f0a8daa50
+		lineageTag: 5379de54-bbdf-4306-b92a-8463622127df
 		sourceLineageTag: home_team_score
 		summarizeBy: sum
 		sourceColumn: home_team_score
@@ -81,7 +81,7 @@ table fact_games
 
 	column away_team_abbrev
 		dataType: string
-		lineageTag: e2501583-864c-4ee3-b063-bce7cf8fb7b1
+		lineageTag: 5cbfa6a9-66d2-42fe-bc5e-edb199b1e8ff
 		sourceLineageTag: away_team_abbrev
 		summarizeBy: none
 		sourceColumn: away_team_abbrev
@@ -91,7 +91,7 @@ table fact_games
 	column away_team_score
 		dataType: int64
 		formatString: 0
-		lineageTag: b050200c-a8af-4a8b-9d86-32b9a084f5cf
+		lineageTag: a4aa9f70-28f0-4e03-9b16-a420da0fa0ee
 		sourceLineageTag: away_team_score
 		summarizeBy: sum
 		sourceColumn: away_team_score
@@ -100,7 +100,7 @@ table fact_games
 
 	column game_outcome_last_period_type
 		dataType: string
-		lineageTag: a31d3347-0929-4796-be24-309b1fb104d9
+		lineageTag: 9dee10d9-9f47-4ffd-b159-f6d307621285
 		sourceLineageTag: game_outcome_last_period_type
 		summarizeBy: none
 		sourceColumn: game_outcome_last_period_type
@@ -110,9 +110,9 @@ table fact_games
 	column winning_scorer_sk
 		dataType: int64
 		formatString: 0
-		lineageTag: 890fd27d-2785-4fa7-b2dc-7f9478a792b1
+		lineageTag: b639da23-b5b3-483d-836a-5ad01104e565
 		sourceLineageTag: winning_scorer_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: winning_scorer_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -120,9 +120,9 @@ table fact_games
 	column winning_goalie_sk
 		dataType: int64
 		formatString: 0
-		lineageTag: 57148051-de4b-4f8e-b45a-a90ebee933ed
+		lineageTag: 088948a7-87e0-484f-b2dd-93aca4e54ffb
 		sourceLineageTag: winning_goalie_sk
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: winning_goalie_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -130,9 +130,9 @@ table fact_games
 	column home_team_sk
 		dataType: int64
 		formatString: 0
-		lineageTag: 3ea8d375-2c88-4b7f-a40a-a4ee153463e5
+		lineageTag: 56187ff1-f58e-4c59-af2f-9c5e2c304ec1
 		sourceLineageTag: home_team_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: home_team_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -140,10 +140,20 @@ table fact_games
 	column away_team_sk
 		dataType: int64
 		formatString: 0
-		lineageTag: 5481ed99-3878-4f11-8f0b-8beec7de7b14
+		lineageTag: 7bdff046-d94c-4d24-8e91-bae5f84673ca
 		sourceLineageTag: away_team_sk
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: away_team_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 74d8941e-c918-487e-bab4-5b10d89732ab
+		sourceLineageTag: date_sk
+		summarizeBy: none
+		sourceColumn: date_sk
 
 		annotation SummarizationSetBy = Automatic
 

@@ -20,13 +20,10 @@
 # META   }
 # META }
 
-# MARKDOWN ********************
+# PARAMETERS CELL ********************
 
-# # notebook to pull raw data for Anaheim players at bronze layer
-
-# CELL ********************
-
-%pip install nhl-api-py
+ingestion_date = None
+team_abbr = None
 
 # METADATA ********************
 
@@ -38,11 +35,15 @@
 # CELL ********************
 
 import json
-from nhlpy import NHLClient
+from datetime import date
 from pyspark.sql import functions as F
-from pyspark.sql.types import StructType, StructField, StringType, TimestampType
+from pyspark.sql.types import StructField, StructType, StringType
+import notebookutils.mssparkutils as mssparkutils
 
-client = NHLClient()
+if ingestion_date is None:
+    ingestion_date = date.today().isoformat()
+if team_abbr is None:
+    team_abbr = "ANA"
 
 # METADATA ********************
 
@@ -55,29 +56,9 @@ client = NHLClient()
 
 team_lookup_df = spark.read.table("bronze.dim_nhl_teams").select("abbr", "franchise_id").collect()
 team_lookup = {row["abbr"]: row["franchise_id"] for row in team_lookup_df}
+team_franchise_id = team_lookup.get(team_abbr, None)
 
-print(f"Team lookup built - {len(team_lookup)} teams")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-seasons = [
-    "20202021",
-    "20212022",
-    "20222023",
-    "20232024",
-    "20242025"
-]
-
-TEAM_ABBR = "ANA"
-TEAM_FRANCHISE_ID = team_lookup.get(TEAM_ABBR, None)
-print(f"Franchise ID for {TEAM_ABBR}: {TEAM_FRANCHISE_ID}")
+print(f"Franchise ID for {team_abbr}: {team_franchise_id}")
 
 # METADATA ********************
 
@@ -88,37 +69,23 @@ print(f"Franchise ID for {TEAM_ABBR}: {TEAM_FRANCHISE_ID}")
 
 # CELL ********************
 
-all_player_ids = set()
-
-for season in seasons:
-    print(f"Fetching {TEAM_ABBR} roster for {season}...")
-    roster = client.teams.team_roster(team_abbr=TEAM_ABBR, season=season)
-    for p in roster['forwards'] + roster['defensemen'] + roster['goalies']:
-        all_player_ids.add(p['id'])
-
-print(f"\nUnique players found across all season: {len(all_player_ids)}")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
+player_stats_dir = f"/lakehouse/default/Files/raw/players/player_stats/{ingestion_date}"
+raw_files = mssparkutils.fs.ls(f"file:{player_stats_dir}")
 
 raw_rows = []
-
-for player_id in all_player_ids:
-    print(f"Fetching player {player_id}...")
-    raw = client.stats.player_career_stats(player_id=str(player_id))
+for file_info in raw_files:
+    player_id = file_info.name.replace(".json", "")
+    local_path = f"{player_stats_dir}/{file_info.name}"
+    with open(local_path, "r") as f:
+        raw = json.load(f)
     raw_rows.append({
         "player_id": player_id,
-        "franchise_id": TEAM_FRANCHISE_ID,
-        "raw_json": json.dumps(raw)
+        "franchise_id": team_franchise_id,
+        "raw_json": json.dumps(raw),
+        "_raw_file_path": local_path
     })
 
-print(f"\nDone - {len(raw_rows)} players fetched")
+print(f"Loaded raw career stats for {len(raw_rows)} players from raw files")
 
 # METADATA ********************
 
@@ -133,6 +100,7 @@ bronze_schema = StructType([
     StructField("player_id", StringType(), True),
     StructField("franchise_id", StringType(), True),
     StructField("raw_json", StringType(), True),
+    StructField("_raw_file_path", StringType(), True)
 ])
 
 df_bronze = spark.createDataFrame(raw_rows, schema=bronze_schema)
@@ -141,27 +109,6 @@ df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
 df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.dim_players")
 
 print(f"Saved bronze.dim_players table with {df_bronze.count()} rows!")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-sample_json = (
-    spark.table("bronze.dim_players")
-    .orderBy(F.col("_ingested_at").desc())
-    .limit(1)
-    .select("raw_json")
-    .collect()[0]["raw_json"]
-)
-import json
-parsed = json.loads(sample_json)
-print(list(parsed.keys()))          # does "seasonTotals" appear at top level?
-print(parsed.get("seasonTotals"))   # if it does, what shape is it?
 
 # METADATA ********************
 

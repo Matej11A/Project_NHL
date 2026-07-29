@@ -2,15 +2,6 @@ relationship b1d4fa4c-de43-bcd0-5bbc-2cfad1771a0d
 	fromColumn: fact_player_career_totals.player_sk
 	toColumn: dim_players.player_sk
 
-relationship 2f18562b-a3ed-d96b-dd9c-48f48668e126
-	fromColumn: fact_games.away_team_sk
-	toColumn: dim_nhl_teams.team_sk
-
-relationship 31d89349-feb2-48cf-105a-e949a92cbe08
-	isActive: false
-	fromColumn: fact_games.home_team_sk
-	toColumn: dim_nhl_teams.team_sk
-
 relationship 53dc1e3b-0dc1-97a8-72de-be22001ed686
 	fromColumn: fact_season_stats.player_sk
 	toColumn: dim_players.player_sk
@@ -30,15 +21,6 @@ relationship cd20169c-7fe0-a315-1175-0aef056be6bf
 relationship 87743c35-ed47-4671-398b-e1061de615e0
 	fromColumn: fact_season_stats.date_sk
 	toColumn: dim_date.date_sk
-
-relationship e82b1467-64bd-0825-8cb3-9509b9d5816d
-	fromColumn: fact_games.winning_goalie_sk
-	toColumn: dim_players.player_sk
-
-relationship 2def4eeb-c6e1-6271-d370-212404b93157
-	isActive: false
-	fromColumn: fact_games.winning_scorer_sk
-	toColumn: dim_players.player_sk
 
 relationship f844771e-030b-da3a-2159-bc4ba83abf3b
 	fromColumn: fact_edge_stats_goalies_detail.player_sk
@@ -74,5 +56,27 @@ relationship f02d979c-4b85-1742-ea02-5226260e9d5d
 
 relationship 7a878ead-7b9f-3d87-287d-71b55a7b6069
 	fromColumn: fact_edge_stats_skaters.player_sk
+	toColumn: dim_players.player_sk
+
+relationship a3ff70fd-7c1a-2e91-efc9-0c53eacc8093
+	fromColumn: fact_games.date_sk
+	toColumn: dim_date.date_sk
+
+relationship b883f11f-6e5d-4889-b792-8fed6cfd5b15
+	fromColumn: fact_games.home_team_sk
+	toColumn: dim_nhl_teams.team_sk
+
+relationship d0180c5e-71c9-4bbe-7c56-1a93eb25ab43
+	isActive: false
+	fromColumn: fact_games.away_team_sk
+	toColumn: dim_nhl_teams.team_sk
+
+relationship e4620d57-40b2-7477-f4e3-c501ae7d38e5
+	fromColumn: fact_games.winning_scorer_sk
+	toColumn: dim_players.player_sk
+
+relationship a8e29970-ae2d-72b7-994a-eda98160712f
+	isActive: false
+	fromColumn: fact_games.winning_goalie_sk
 	toColumn: dim_players.player_sk
 

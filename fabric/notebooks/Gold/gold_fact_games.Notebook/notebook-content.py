@@ -39,6 +39,8 @@ gold_players = spark.table("gold.dim_players")
 
 gold_teams = spark.table("gold.dim_nhl_teams")
 
+gold_date = spark.table("gold.dim_date")
+
 # METADATA ********************
 
 # META {
@@ -142,7 +144,7 @@ games_with_home_team = (
 
 away_team_dim = gold_teams.alias("away_team_dim")
 
-games_final = (
+games_with_away_team = (
     games_with_home_team.alias("g4")
     .join(
         away_team_dim,
@@ -157,6 +159,51 @@ games_final = (
         F.col("away_team_dim.team_sk").alias("away_team_sk"),
     )
 )
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+games_with_away_team_dated = games_with_away_team.withColumn(
+    "date_sk", F.date_format(F.col("game_date"), "yyyyMMdd").cast("int")
+)
+
+date_dim = gold_date.alias("date_dim")
+
+games_final = (
+    games_with_away_team_dated.alias("g5")
+    .join(
+        F.broadcast(date_dim.select("date_sk")),
+        on="date_sk",
+        how="left"
+    )
+    .select(
+        "g5.id", "g5.season", "g5.game_date", "g5.game_type", "g5.game_state",
+        "g5.game_scheduled_state", "g5.home_team_abbrev", "g5.home_team_score",
+        "g5.away_team_abbrev", "g5.away_team_score", "g5.game_outcome_last_period_type",
+        "g5.winning_scorer_sk", "g5.winning_goalie_sk", "g5.home_team_sk", "g5.away_team_sk",
+        "g5.date_sk",
+    )
+)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+row_count_match = games_final.count() == silver_games.count()
+null_date_sk = games_final.filter(F.col("date_sk").isNull()).count()
+print(f"Row count match: {row_count_match}")
+print(f"Null date_sk rows: {null_date_sk}")
 
 # METADATA ********************
 
