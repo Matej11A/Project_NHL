@@ -24,4 +24,5 @@ ref table fact_edge_stats_skaters_detail
 ref table fact_edge_stats_goalies
 ref table fact_edge_stats_goalies_detail
 ref table fact_season_stats
+ref table _Measures
 

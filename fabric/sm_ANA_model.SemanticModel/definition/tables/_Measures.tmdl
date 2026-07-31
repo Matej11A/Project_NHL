@@ -1,0 +1,39 @@
+table _Measures
+	measure "Player Name" =
+		SELECTEDVALUE(dim_players[name], "Unknown")
+
+	measure "Total Points" =
+		SUM(fact_season_stats[points])
+
+	measure "Total Goals" =
+		SUM(fact_season_stats[goals])
+
+	measure "Total Assists" =
+		SUM(fact_season_stats[assists])
+
+	measure "Games Played" =
+		SUM(fact_season_stats[games_played])
+
+	measure "Points Per Game" =
+		DIVIDE([Total Points], [Games Played])
+
+	measure "Goals Per Game" =
+		DIVIDE([Total Goals], [Games Played])
+
+	measure "Assists Per Game" =
+		DIVIDE([Total Assists], [Games Played])
+
+	measure "Skater Total Distance (km)" =
+		SUM(fact_edge_stats_skaters[total_distance_skated_km])
+
+	measure "Max Game Distance (km)" =
+		MAX(fact_edge_stats_skaters[max_game_distance_km])
+
+	measure "Top Shot Speed (km/h)" =
+		MAX(fact_edge_stats_skaters[top_shot_speed_kmh])
+
+	measure "Goalie Goal Differential / 60" =
+		AVERAGE(fact_edge_stats_goalies[goal_differential_per_60])
+
+	measure "Goalie Point %" =
+		AVERAGE(fact_edge_stats_goalies[point_pctg])
