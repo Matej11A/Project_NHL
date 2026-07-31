@@ -1,0 +1,56 @@
+{
+  "name": "NHL Performance Theme",
+  "dataColors": ["#CF4520", "#B9975B", "#1A1A1A", "#D9D9D9", "#F5F3F0"],
+  "background": "#F5F3F0",
+  "foreground": "#1A1A1A",
+  "tableAccent": "#CF4520",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [
+          {
+            "color": "#D9D9D9"
+          }
+        ],
+        "grid": [
+          {
+            "color": "#D9D9D9"
+          }
+        ],
+        "legend": [
+          {
+            "labelColor": "#1A1A1A"
+          }
+        ],
+        "title": [
+          {
+            "color": "#1A1A1A"
+          }
+        ],
+        "valueAxis": [
+          {
+            "labelColor": "#1A1A1A",
+            "titleColor": "#1A1A1A"
+          }
+        ],
+        "categoryAxis": [
+          {
+            "labelColor": "#1A1A1A",
+            "titleColor": "#1A1A1A"
+          }
+        ]
+      }
+    }
+  },
+  "textClasses": {
+    "label": {
+      "color": "#1A1A1A"
+    },
+    "title": {
+      "color": "#1A1A1A"
+    },
+    "callout": {
+      "color": "#1A1A1A"
+    }
+  }
+}

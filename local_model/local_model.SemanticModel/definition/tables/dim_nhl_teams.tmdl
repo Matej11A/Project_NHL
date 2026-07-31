@@ -1,0 +1,70 @@
+table dim_nhl_teams
+	lineageTag: 6b40e9a3-1a68-4017-b167-a0297e7c0a7d
+
+	column team_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 56d97795-dd00-4278-a26d-adfec7ef469c
+		summarizeBy: none
+		sourceColumn: team_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column franchise_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f11b491-b25a-4934-9463-d6626f1e3751
+		summarizeBy: none
+		sourceColumn: franchise_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: ec656454-a387-4776-88cb-54ee797d1dd0
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column abbr
+		dataType: string
+		lineageTag: 05d94fbd-1add-4249-9055-97db3c2b5672
+		summarizeBy: none
+		sourceColumn: abbr
+
+		annotation SummarizationSetBy = Automatic
+
+	column logo
+		dataType: string
+		lineageTag: 5ab817f0-7f6e-45a6-ba8d-6b83f6d8057a
+		summarizeBy: none
+		sourceColumn: logo
+
+		annotation SummarizationSetBy = Automatic
+
+	column conference_name
+		dataType: string
+		lineageTag: 6cfcd74d-bef0-4f15-92f9-5d01b8d47243
+		summarizeBy: none
+		sourceColumn: conference_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column division_name
+		dataType: string
+		lineageTag: cb53c548-54b1-4ac1-896b-6f0182cd3ec2
+		summarizeBy: none
+		sourceColumn: division_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_nhl_teams = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_dim_nhl_teams = Source{[Schema="gold",Item="dim_nhl_teams"]}[Data]
+				in
+				    gold_dim_nhl_teams
+

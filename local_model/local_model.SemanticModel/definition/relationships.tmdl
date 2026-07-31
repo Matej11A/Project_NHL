@@ -1,0 +1,82 @@
+relationship AutoDetected_9575fc7d-eabb-431e-b466-0929556f2173
+	fromColumn: fact_edge_stats_goalies.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_3661d95b-c885-4598-8734-a972367cfc00
+	fromColumn: fact_edge_stats_goalies_detail.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_0c58f5dd-3ec0-4a8f-828b-73cde872334a
+	fromColumn: fact_edge_stats_goalies_summary.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_03c23c8c-c51d-496d-90de-7f280a77de18
+	fromColumn: fact_edge_stats_skaters.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_5117f6ec-8fbc-46c4-8a32-0546e01d1a77
+	fromColumn: fact_edge_stats_skaters_detail.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_947e8897-daaf-4049-8b96-a05da15e274b
+	fromColumn: fact_games.date_sk
+	toColumn: dim_date.date_sk
+
+relationship AutoDetected_cc7c5c45-415a-4ebe-a319-3ea9851c6b6a
+	fromColumn: fact_season_stats.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 720ea57d-8c81-651d-5d88-ba899ff36aa4
+	fromColumn: fact_edge_stats_skaters_summary.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 14936829-6dda-2aea-88e8-1ec57632bf93
+	isActive: false
+	fromColumn: fact_games.away_team_sk
+	toColumn: dim_nhl_teams.team_sk
+
+relationship d8b06dab-fef1-0fff-b5c7-28d2529ec0f3
+	fromColumn: fact_games.home_team_sk
+	toColumn: dim_nhl_teams.team_sk
+
+relationship feeb6e54-d35f-a2e3-51d3-add3d5d11712
+	isActive: false
+	fromColumn: fact_games.winning_goalie_sk
+	toColumn: dim_players.player_sk
+
+relationship 3315b863-4b1d-e4d5-564f-6dc5578adb3f
+	fromColumn: fact_games.winning_scorer_sk
+	toColumn: dim_players.player_sk
+
+relationship e12e54ec-4660-5cee-e587-2fcfef45bbb5
+	fromColumn: fact_player_career_totals.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 91814f0c-9550-2452-d206-10528669aa6c
+	fromColumn: fact_edge_stats_skaters_detail.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 69697b7e-1d83-b299-ca49-b6a896518295
+	fromColumn: fact_edge_stats_skaters.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 8d32c19c-8179-667d-215c-491342ef3b59
+	fromColumn: fact_edge_stats_skaters_summary.date_sk
+	toColumn: dim_date.date_sk
+
+relationship 16c86a7b-a8e8-7f17-d162-2cce6561d999
+	fromColumn: fact_season_stats.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 85c7e430-8f81-9437-4369-3466015cc0d8
+	fromColumn: fact_edge_stats_goalies.player_sk
+	toColumn: dim_players.player_sk
+
+relationship a52278d8-e6db-2621-d9f4-6dfe113a96b4
+	fromColumn: fact_edge_stats_goalies_detail.player_sk
+	toColumn: dim_players.player_sk
+
+relationship 2c4b1138-2898-50a3-5e1d-3ce327f35e08
+	fromColumn: fact_edge_stats_goalies_summary.player_sk
+	toColumn: dim_players.player_sk
+

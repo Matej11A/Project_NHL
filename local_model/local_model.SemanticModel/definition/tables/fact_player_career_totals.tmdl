@@ -1,0 +1,275 @@
+table fact_player_career_totals
+	lineageTag: 18518eff-161c-4fa5-a6cf-4ecaedff9008
+
+	column player_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 35d4b318-44e1-4dbe-9c2d-3da34dbf60ab
+		summarizeBy: none
+		sourceColumn: player_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_id
+		dataType: string
+		lineageTag: 46e55d45-3e11-4916-9ff3-cc7a8ea5797f
+		summarizeBy: none
+		sourceColumn: player_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column game_type
+		dataType: string
+		lineageTag: b22125d8-73fa-43b6-b475-a55cf6a3b9f9
+		summarizeBy: none
+		sourceColumn: game_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column assists
+		dataType: int64
+		formatString: 0
+		lineageTag: 0513d0a8-5261-460b-a0ac-f72b59ac8530
+		summarizeBy: sum
+		sourceColumn: assists
+
+		annotation SummarizationSetBy = Automatic
+
+	column avgToi
+		dataType: string
+		lineageTag: 0b7a595c-352f-4619-91ad-ab3498e6ff8b
+		summarizeBy: none
+		sourceColumn: avgToi
+
+		annotation SummarizationSetBy = Automatic
+
+	column faceoffWinningPctg
+		dataType: double
+		lineageTag: e0d49302-4d07-4e85-969b-b0eb0360a1db
+		summarizeBy: sum
+		sourceColumn: faceoffWinningPctg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gameWinningGoals
+		dataType: int64
+		formatString: 0
+		lineageTag: 249881a5-b083-48b8-acf4-9fe008562c74
+		summarizeBy: sum
+		sourceColumn: gameWinningGoals
+
+		annotation SummarizationSetBy = Automatic
+
+	column gamesPlayed
+		dataType: int64
+		formatString: 0
+		lineageTag: 86629c64-7647-4ec7-a34a-f24cc8218072
+		summarizeBy: sum
+		sourceColumn: gamesPlayed
+
+		annotation SummarizationSetBy = Automatic
+
+	column gamesStarted
+		dataType: int64
+		formatString: 0
+		lineageTag: a15ae32f-2a90-4bcd-b11c-37d37219c5fa
+		summarizeBy: sum
+		sourceColumn: gamesStarted
+
+		annotation SummarizationSetBy = Automatic
+
+	column goals
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ff1f219-6a5e-41d9-b963-e18ea5348eb7
+		summarizeBy: sum
+		sourceColumn: goals
+
+		annotation SummarizationSetBy = Automatic
+
+	column goalsAgainst
+		dataType: int64
+		formatString: 0
+		lineageTag: c5db5c57-9212-42d9-a5fa-09bf1a19ce1d
+		summarizeBy: sum
+		sourceColumn: goalsAgainst
+
+		annotation SummarizationSetBy = Automatic
+
+	column goalsAgainstAvg
+		dataType: double
+		lineageTag: 16b103ac-2233-4388-b1da-297fa45d3e66
+		summarizeBy: sum
+		sourceColumn: goalsAgainstAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column losses
+		dataType: int64
+		formatString: 0
+		lineageTag: 53f95f75-d05a-4898-9370-f790ebc24ae4
+		summarizeBy: sum
+		sourceColumn: losses
+
+		annotation SummarizationSetBy = Automatic
+
+	column otGoals
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c37dd55-5c2f-4ccb-8a5c-15e0a799131f
+		summarizeBy: sum
+		sourceColumn: otGoals
+
+		annotation SummarizationSetBy = Automatic
+
+	column otLosses
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a134b49-ce48-4958-96d1-27ada4320f15
+		summarizeBy: sum
+		sourceColumn: otLosses
+
+		annotation SummarizationSetBy = Automatic
+
+	column pim
+		dataType: int64
+		formatString: 0
+		lineageTag: 924842c1-9c5a-46fa-a45e-3c16231a5f6a
+		summarizeBy: sum
+		sourceColumn: pim
+
+		annotation SummarizationSetBy = Automatic
+
+	column plusMinus
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b75aabe-89e7-4628-9e11-cc20f4321577
+		summarizeBy: sum
+		sourceColumn: plusMinus
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: int64
+		formatString: 0
+		lineageTag: 37da6297-426e-4e25-bb05-e8c7ca1cd4b0
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+	column powerPlayGoals
+		dataType: int64
+		formatString: 0
+		lineageTag: 8736c17e-0783-4f26-a264-aa584e2f0377
+		summarizeBy: sum
+		sourceColumn: powerPlayGoals
+
+		annotation SummarizationSetBy = Automatic
+
+	column powerPlayPoints
+		dataType: int64
+		formatString: 0
+		lineageTag: 24bf4d99-b5d4-4b12-8029-8685cff9979a
+		summarizeBy: sum
+		sourceColumn: powerPlayPoints
+
+		annotation SummarizationSetBy = Automatic
+
+	column savePctg
+		dataType: double
+		lineageTag: f2c6e693-4eb1-4cf8-a567-ef69f1095589
+		summarizeBy: sum
+		sourceColumn: savePctg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shootingPctg
+		dataType: double
+		lineageTag: c83cf521-f05e-420e-8041-3081a7748997
+		summarizeBy: sum
+		sourceColumn: shootingPctg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shorthandedGoals
+		dataType: int64
+		formatString: 0
+		lineageTag: a29717ec-99e8-432d-8ab4-55bb9ba5ed16
+		summarizeBy: sum
+		sourceColumn: shorthandedGoals
+
+		annotation SummarizationSetBy = Automatic
+
+	column shorthandedPoints
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d4675ca-1c05-4317-a491-891d3885a606
+		summarizeBy: sum
+		sourceColumn: shorthandedPoints
+
+		annotation SummarizationSetBy = Automatic
+
+	column shots
+		dataType: int64
+		formatString: 0
+		lineageTag: 51308141-1fba-42e7-a8f4-803ca0499e77
+		summarizeBy: sum
+		sourceColumn: shots
+
+		annotation SummarizationSetBy = Automatic
+
+	column shotsAgainst
+		dataType: int64
+		formatString: 0
+		lineageTag: cf49034f-cc12-4aa8-b4c1-85dc59e79efe
+		summarizeBy: sum
+		sourceColumn: shotsAgainst
+
+		annotation SummarizationSetBy = Automatic
+
+	column shutouts
+		dataType: int64
+		formatString: 0
+		lineageTag: 30288fcd-252b-4be1-b513-a79d5bd9bd7e
+		summarizeBy: sum
+		sourceColumn: shutouts
+
+		annotation SummarizationSetBy = Automatic
+
+	column timeOnIce
+		dataType: string
+		lineageTag: 5ac29268-a8c5-4a4f-8cfb-8e025d8c2193
+		summarizeBy: none
+		sourceColumn: timeOnIce
+
+		annotation SummarizationSetBy = Automatic
+
+	column wins
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ebf594a-db99-4be3-8bbf-d8934cacbb1c
+		summarizeBy: sum
+		sourceColumn: wins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_player_career_totals = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_fact_player_career_totals = Source{[Schema="gold",Item="fact_player_career_totals"]}[Data]
+				in
+				    gold_fact_player_career_totals
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,177 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 788.57608411226931,
+            "y": 526.54429072878258
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "151f5218-f830-44d6-83f6-9221fe72c0ab",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1681.6441129297743,
+            "y": 563.77051992925226
+          },
+          "nodeIndex": "dim_nhl_teams",
+          "nodeLineageTag": "6b40e9a3-1a68-4017-b167-a0297e7c0a7d",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 880.31783465076148,
+            "y": 935.05171235235832
+          },
+          "nodeIndex": "fact_edge_stats_goalies",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 539.33516273681187
+          },
+          "nodeIndex": "dim_players",
+          "nodeLineageTag": "a131b066-9d78-4d76-aaba-9f676cb7abba",
+          "size": {
+            "height": 288.72533482208883,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1156.548650355694,
+            "y": 938.61587606110436
+          },
+          "nodeIndex": "fact_edge_stats_goalies_detail",
+          "nodeLineageTag": "ea98e635-4633-4d47-9184-76ebc5fa79c8",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1417.6322152064529,
+            "y": 932.97854347214877
+          },
+          "nodeIndex": "fact_edge_stats_goalies_summary",
+          "nodeLineageTag": "b9238d05-7212-40d8-b118-376e99a4008c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 238.58451663310717,
+            "y": 0
+          },
+          "nodeIndex": "fact_edge_stats_skaters",
+          "nodeLineageTag": "b0e447cc-dfd2-4def-a00a-8320202ea691",
+          "size": {
+            "height": 300,
+            "width": 267.82399553373352
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 2.8296711740261031,
+            "y": 0
+          },
+          "nodeIndex": "fact_edge_stats_skaters_detail",
+          "nodeLineageTag": "efb875ba-bea8-4a64-aee3-dc40a2c979ed",
+          "size": {
+            "height": 248,
+            "width": 210.04133649693875
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 561.36175461886,
+            "y": 0
+          },
+          "nodeIndex": "fact_edge_stats_skaters_summary",
+          "nodeLineageTag": "173abebd-67ee-4a16-84ae-56fd0ea39053",
+          "size": {
+            "height": 300,
+            "width": 314.33198939261695
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1364.4934572426791,
+            "y": 0
+          },
+          "nodeIndex": "fact_games",
+          "nodeLineageTag": "c9b53ae8-62f3-4590-b075-dc356555b2a2",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1706.9077879172148,
+            "y": 0
+          },
+          "nodeIndex": "fact_season_stats",
+          "nodeLineageTag": "34459d5d-0866-4bbc-a162-7b076d6dad68",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1046.3985350978992,
+            "y": 0
+          },
+          "nodeIndex": "fact_player_career_totals",
+          "nodeLineageTag": "18518eff-161c-4fa5-a6cf-4ecaedff9008",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 70.95554390096882,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

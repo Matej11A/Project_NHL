@@ -1,0 +1,155 @@
+table fact_games
+	lineageTag: c9b53ae8-62f3-4590-b075-dc356555b2a2
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: de449b68-2deb-415a-a585-a7a25f9bacc4
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column season
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ba51b15-6c13-47a2-8c4c-f44657198473
+		summarizeBy: sum
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column game_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e0ea071a-691b-4da6-a8d0-d0d84da58c8a
+		summarizeBy: none
+		sourceColumn: game_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column game_type
+		dataType: int64
+		formatString: 0
+		lineageTag: fc415345-796f-4513-b74d-5c2ddc5a0c2f
+		summarizeBy: sum
+		sourceColumn: game_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column game_state
+		dataType: string
+		lineageTag: 37580b22-0694-4b09-9e47-dce94925eb0d
+		summarizeBy: none
+		sourceColumn: game_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column game_scheduled_state
+		dataType: string
+		lineageTag: 7ae22895-5fd8-4138-8d39-16f047e5a8de
+		summarizeBy: none
+		sourceColumn: game_scheduled_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_team_abbrev
+		dataType: string
+		lineageTag: 2c7c16bf-f2e3-4900-a133-846f4594540a
+		summarizeBy: none
+		sourceColumn: home_team_abbrev
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_team_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 2dec9df8-d540-430d-a7d8-cbef870f9dcd
+		summarizeBy: sum
+		sourceColumn: home_team_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_team_abbrev
+		dataType: string
+		lineageTag: 25886b62-1906-457a-9f87-b0d0aadfd525
+		summarizeBy: none
+		sourceColumn: away_team_abbrev
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_team_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 2cb7d288-f1dc-42c1-a9eb-9eaa5050f507
+		summarizeBy: sum
+		sourceColumn: away_team_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column game_outcome_last_period_type
+		dataType: string
+		lineageTag: fe38ddf4-1dda-4f7d-a3b1-68649c7c2a13
+		summarizeBy: none
+		sourceColumn: game_outcome_last_period_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column winning_scorer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f126210-7bf7-4d1f-b18f-c73af4e3ab2f
+		summarizeBy: none
+		sourceColumn: winning_scorer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column winning_goalie_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 08c62210-8324-429c-80e2-4ce03183925e
+		summarizeBy: sum
+		sourceColumn: winning_goalie_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column home_team_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 23fcfd19-cff4-4359-af9e-67b5b33eaa43
+		summarizeBy: none
+		sourceColumn: home_team_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column away_team_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: da28e7be-96c6-4a39-84b1-1c78d685217f
+		summarizeBy: sum
+		sourceColumn: away_team_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 8da5bb0b-5fd5-4494-ba26-c4c0b6d1e1df
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_games = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_fact_games = Source{[Schema="gold",Item="fact_games"]}[Data]
+				in
+				    gold_fact_games
+
+	annotation PBI_ResultType = Table
+

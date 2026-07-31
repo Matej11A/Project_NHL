@@ -1,0 +1,75 @@
+table fact_edge_stats_skaters_detail
+	lineageTag: efb875ba-bea8-4a64-aee3-dc40a2c979ed
+
+	column player_id
+		dataType: string
+		lineageTag: 3a3dabb2-cee0-4cec-a03e-c1b94372abf5
+		summarizeBy: none
+		sourceColumn: player_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column season
+		dataType: string
+		lineageTag: 6e03d0d2-beb7-4b57-a4cb-9757a6b0b570
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column area
+		dataType: string
+		lineageTag: da146d62-5ad9-4b80-a6c6-c84f2d8a67a4
+		summarizeBy: none
+		sourceColumn: area
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: aafcaee0-fb2d-431b-9684-bfc398ce6874
+		summarizeBy: none
+		sourceColumn: player_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 586e4f2a-f885-41a4-9f30-3466ac6a28b5
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column shots
+		dataType: int64
+		formatString: 0
+		lineageTag: 085f2f8a-d8bf-4e77-8d03-78274177e9fe
+		summarizeBy: sum
+		sourceColumn: shots
+
+		annotation SummarizationSetBy = Automatic
+
+	column shots_percentile
+		dataType: double
+		lineageTag: 1444edad-8ddd-41b9-9ca2-865c21f2651b
+		summarizeBy: sum
+		sourceColumn: shots_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_edge_stats_skaters_detail = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_fact_edge_stats_skaters_detail = Source{[Schema="gold",Item="fact_edge_stats_skaters_detail"]}[Data]
+				in
+				    gold_fact_edge_stats_skaters_detail
+
+	annotation PBI_ResultType = Table
+

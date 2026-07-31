@@ -1,0 +1,196 @@
+table fact_edge_stats_goalies
+	lineageTag: 471e396d-47a2-447a-86d1-acbc6d507fb7
+
+	column player_id
+		dataType: string
+		lineageTag: b5cfb1d5-d2e7-492f-b0d2-1a2a1eba05ae
+		summarizeBy: none
+		sourceColumn: player_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column season
+		dataType: string
+		lineageTag: ac5bcbb9-89cb-4fb1-b38b-2f56c2a0a676
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: d24eb7a5-d2c9-462a-b31f-c62ccfc29811
+		summarizeBy: none
+		sourceColumn: player_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: f02f4fb9-12fd-4324-9379-b86db4e5e6c5
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column games_above_900
+		dataType: double
+		lineageTag: 84531a42-50f9-4158-8145-4979f5f133de
+		summarizeBy: sum
+		sourceColumn: games_above_900
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column games_above_900_percentile
+		dataType: double
+		lineageTag: 2acd8899-ba7a-4d9f-9354-ba9d422ffd2d
+		summarizeBy: sum
+		sourceColumn: games_above_900_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column games_above_900_leagueAvg
+		dataType: double
+		lineageTag: 4011e8f9-a944-422e-a8fc-2db7eb355c0e
+		summarizeBy: sum
+		sourceColumn: games_above_900_leagueAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_differential_per_60
+		dataType: double
+		lineageTag: f87bee08-d014-4f0f-9e9a-1f61ce04de69
+		summarizeBy: sum
+		sourceColumn: goal_differential_per_60
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_differential_per_60_percentile
+		dataType: double
+		lineageTag: b804bc2f-af6d-4505-90df-e1d318fb3357
+		summarizeBy: sum
+		sourceColumn: goal_differential_per_60_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_differential_per_60_leagueAvg
+		dataType: double
+		lineageTag: 673628cb-0ae7-430d-a0a8-b928e041cc19
+		summarizeBy: sum
+		sourceColumn: goal_differential_per_60_leagueAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_support_avg
+		dataType: double
+		lineageTag: a5cb1d68-0ce8-465f-93e0-bc9f360844a5
+		summarizeBy: sum
+		sourceColumn: goal_support_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_support_avg_percentile
+		dataType: double
+		lineageTag: e1989f96-2c81-49ed-8ec5-c91f4fa003cd
+		summarizeBy: sum
+		sourceColumn: goal_support_avg_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goal_support_avg_leagueAvg
+		dataType: double
+		lineageTag: 4122838f-b391-4b53-b109-7cf6a5e30cb0
+		summarizeBy: sum
+		sourceColumn: goal_support_avg_leagueAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goals_against_avg
+		dataType: double
+		lineageTag: 81042fd5-3598-4b7b-ac74-c57a6c34d488
+		summarizeBy: sum
+		sourceColumn: goals_against_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goals_against_avg_percentile
+		dataType: double
+		lineageTag: e7c47023-e809-4bcf-a8c5-b6fabb8c0359
+		summarizeBy: sum
+		sourceColumn: goals_against_avg_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column goals_against_avg_leagueAvg
+		dataType: double
+		lineageTag: ee79edf3-4a06-49f7-ae38-1ae2b3205b3e
+		summarizeBy: sum
+		sourceColumn: goals_against_avg_leagueAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column point_pctg
+		dataType: double
+		lineageTag: 09b291a6-6bb3-4f9b-ac22-70d85881581e
+		summarizeBy: sum
+		sourceColumn: point_pctg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column point_pctg_percentile
+		dataType: double
+		lineageTag: eeaaff5b-80b2-4d84-8360-de8d0224e482
+		summarizeBy: sum
+		sourceColumn: point_pctg_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column point_pctg_leagueAvg
+		dataType: double
+		lineageTag: bc6fc50e-50a5-49fc-8475-f3cd28543c56
+		summarizeBy: sum
+		sourceColumn: point_pctg_leagueAvg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_edge_stats_goalies = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_fact_edge_stats_goalies = Source{[Schema="gold",Item="fact_edge_stats_goalies"]}[Data]
+				in
+				    gold_fact_edge_stats_goalies
+

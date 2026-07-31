@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["dim_date","dim_nhl_teams","fact_edge_stats_goalies","dim_players","fact_edge_stats_goalies_detail","fact_edge_stats_goalies_summary","fact_edge_stats_skaters","fact_edge_stats_skaters_detail","fact_edge_stats_skaters_summary","fact_games","fact_season_stats","fact_player_career_totals"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_date
+ref table dim_nhl_teams
+ref table fact_edge_stats_goalies
+ref table dim_players
+ref table fact_edge_stats_goalies_detail
+ref table fact_edge_stats_goalies_summary
+ref table fact_edge_stats_skaters
+ref table fact_edge_stats_skaters_detail
+ref table fact_edge_stats_skaters_summary
+ref table fact_games
+ref table fact_season_stats
+ref table fact_player_career_totals
+
+ref cultureInfo en-US
+

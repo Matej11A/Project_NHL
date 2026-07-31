@@ -1,0 +1,95 @@
+table fact_edge_stats_goalies_detail
+	lineageTag: ea98e635-4633-4d47-9184-76ebc5fa79c8
+
+	column player_id
+		dataType: string
+		lineageTag: a6c67b56-a6a3-4612-80ee-cb6323bd7f94
+		summarizeBy: none
+		sourceColumn: player_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column season
+		dataType: string
+		lineageTag: 622d94fb-586d-48a4-8b90-12fceac219b4
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column area
+		dataType: string
+		lineageTag: 215f6b8c-da76-4900-a099-a259b188307b
+		summarizeBy: none
+		sourceColumn: area
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b5ca2f5-d7c1-432d-8001-6d11940ab09b
+		summarizeBy: none
+		sourceColumn: player_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 2ec19617-b412-4730-bc3d-2f24744f00c7
+		summarizeBy: none
+		sourceColumn: date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column save_pctg
+		dataType: double
+		lineageTag: c0dcc5c8-0d2b-4173-b12e-31c74961f339
+		summarizeBy: sum
+		sourceColumn: save_pctg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column save_pctg_percentile
+		dataType: double
+		lineageTag: fae8c0c8-5582-465b-82bc-f342ac492833
+		summarizeBy: sum
+		sourceColumn: save_pctg_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column saves
+		dataType: int64
+		formatString: 0
+		lineageTag: e711fc71-37ee-40d3-aeaf-d9744a89225d
+		summarizeBy: sum
+		sourceColumn: saves
+
+		annotation SummarizationSetBy = Automatic
+
+	column saves_percentile
+		dataType: double
+		lineageTag: 9359899a-7702-4a22-820c-95d5b153c1d8
+		summarizeBy: sum
+		sourceColumn: saves_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_edge_stats_goalies_detail = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_fact_edge_stats_goalies_detail = Source{[Schema="gold",Item="fact_edge_stats_goalies_detail"]}[Data]
+				in
+				    gold_fact_edge_stats_goalies_detail
+
+	annotation PBI_ResultType = Table
+

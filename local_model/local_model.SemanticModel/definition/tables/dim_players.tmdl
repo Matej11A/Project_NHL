@@ -1,0 +1,221 @@
+table dim_players
+	lineageTag: a131b066-9d78-4d76-aaba-9f676cb7abba
+
+	column franchise_id
+		dataType: string
+		lineageTag: 6d5cba45-3c66-4998-b88e-71c1f72d0bd5
+		summarizeBy: none
+		sourceColumn: franchise_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_id
+		dataType: string
+		lineageTag: 15098944-eacd-42b0-9636-833a72d0b99f
+		summarizeBy: none
+		sourceColumn: player_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column position
+		dataType: string
+		lineageTag: 55a7a823-bfc7-41a1-8465-9cb697b2c0dd
+		summarizeBy: none
+		sourceColumn: position
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: f4452583-d38d-44fa-aa04-62c048965caf
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: aca8ed7e-ca93-4d60-b35c-b18e893731ad
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column headshot
+		dataType: string
+		lineageTag: dd3c45e0-9954-467a-9394-b93bc1d742ce
+		summarizeBy: none
+		sourceColumn: headshot
+
+		annotation SummarizationSetBy = Automatic
+
+	column height_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: 7597f5d3-6035-4d38-afc6-8d8efffe0534
+		summarizeBy: sum
+		sourceColumn: height_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column weight_kg
+		dataType: int64
+		formatString: 0
+		lineageTag: 24b1d8b1-4a5f-42f6-8060-784be2330e03
+		summarizeBy: sum
+		sourceColumn: weight_kg
+
+		annotation SummarizationSetBy = Automatic
+
+	column sweater_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 908deec3-5afd-4da7-944e-18ab4000fca4
+		summarizeBy: sum
+		sourceColumn: sweater_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column birth_city
+		dataType: string
+		lineageTag: cf4b87a4-df2d-4bc1-b98c-6826a2d20a71
+		summarizeBy: none
+		sourceColumn: birth_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column birth_country
+		dataType: string
+		lineageTag: 7769c0f3-1728-4114-9d74-f1c1f97d5a6e
+		summarizeBy: none
+		sourceColumn: birth_country
+
+		annotation SummarizationSetBy = Automatic
+
+	column birth_province
+		dataType: string
+		lineageTag: 244c73da-234f-40b7-8feb-6178b632f4ae
+		summarizeBy: none
+		sourceColumn: birth_province
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_overall_pick
+		dataType: int64
+		formatString: 0
+		lineageTag: 628f4a88-72c0-48ea-8e82-15323ce8b3d1
+		summarizeBy: sum
+		sourceColumn: draft_overall_pick
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_pick_in_round
+		dataType: int64
+		formatString: 0
+		lineageTag: a0f08bb1-35fd-4f76-bed0-32e9cd5d7011
+		summarizeBy: sum
+		sourceColumn: draft_pick_in_round
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_round
+		dataType: int64
+		formatString: 0
+		lineageTag: fe1c5c54-4bd9-433f-8fa3-2a18d07df8a6
+		summarizeBy: sum
+		sourceColumn: draft_round
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_year
+		dataType: int64
+		formatString: 0
+		lineageTag: d61ac5c7-fed6-41dc-a6ec-f6f3ee17c102
+		summarizeBy: sum
+		sourceColumn: draft_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_team_abbrev
+		dataType: string
+		lineageTag: 908dd2ca-8f6f-4696-8e92-f3161acdb642
+		summarizeBy: none
+		sourceColumn: draft_team_abbrev
+
+		annotation SummarizationSetBy = Automatic
+
+	column effective_start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7fab8797-e143-4e78-a6f1-3610c152f829
+		summarizeBy: none
+		sourceColumn: effective_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column effective_end_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 89e098fc-1f83-484a-a3c0-2b827b90796a
+		summarizeBy: none
+		sourceColumn: effective_end_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column is_current
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c085057c-d940-491b-95e6-4e7e832e95c2
+		summarizeBy: none
+		sourceColumn: is_current
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: a0844029-89c3-404d-a58c-ed8b46a32141
+		summarizeBy: none
+		sourceColumn: player_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 9b50f32e-be58-41eb-a563-c2383203fc57
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column conference_name
+		dataType: string
+		lineageTag: c75fc816-bbbf-4955-a6cb-81ceba5bb311
+		summarizeBy: none
+		sourceColumn: conference_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column division_name
+		dataType: string
+		lineageTag: dbb84834-c9af-48db-a229-8f4c80db0034
+		summarizeBy: none
+		sourceColumn: division_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_players = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com", "lh_Main"),
+				    gold_dim_players = Source{[Schema="gold",Item="dim_players"]}[Data]
+				in
+				    gold_dim_players
+
+	annotation PBI_ResultType = Table
+
