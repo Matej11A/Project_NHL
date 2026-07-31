@@ -2,145 +2,200 @@ table _Measures
 	lineageTag: 7f0d0e30-3acd-497f-9342-96521b0b0e4d
 
 	measure 'Player Name' =
-		SELECTEDVALUE(dim_players[name], 'Unknown')
-		annotation Description = 'Returns the display name of the selected player. Useful for player cards and drill-down visuals.'
+			SELECTEDVALUE(dim_players[name], "Unknown")
+			-- annotation Description = 'Returns the display name of the selected player. Useful for player cards and drill-down visuals.'
+		lineageTag: b288e01c-ad00-46fe-8ac9-f15af728c56e
 
 	measure 'Player Position' =
-		SELECTEDVALUE(dim_players[position], 'Unknown')
-		annotation Description = 'Returns the player position such as C, LW, RW, D, or G. Helpful for segmenting performance by role.'
+			SELECTEDVALUE(dim_players[position], "Unknown")
+			-- annotation Description = 'Returns the player position such as C, LW, RW, D, or G. Helpful for segmenting performance by role.'
+		lineageTag: c31398d5-c40b-4b41-bafc-4fc9a63ddf42
 
 	measure 'Total Points' =
-		SUM(fact_season_stats[points])
-		annotation Description = 'Total points accumulated by the selected player or team across the filtered season context.'
+			SUM(fact_season_stats[points])
+			-- annotation Description = 'Total points accumulated by the selected player or team across the filtered season context.'
+		lineageTag: f510bc6d-1593-4eba-bcd0-d1832c6c154f
 
 	measure 'Total Goals' =
-		SUM(fact_season_stats[goals])
-		annotation Description = 'Total goals scored by the selected player or team in the current filter context.'
+			SUM(fact_season_stats[goals])
+			-- annotation Description = 'Total goals scored by the selected player or team in the current filter context.'
+		lineageTag: 784863ba-33b0-4dbc-8e3c-26913eb32df4
 
 	measure 'Total Assists' =
-		SUM(fact_season_stats[assists])
-		annotation Description = 'Total assists contributed by the selected player or team in the current filter context.'
+			SUM(fact_season_stats[assists])
+			-- annotation Description = 'Total assists contributed by the selected player or team in the current filter context.'
+		lineageTag: 0b17b689-3f1a-4b2d-a998-aa14e8ed1d63
 
 	measure 'Games Played' =
-		SUM(fact_season_stats[games_played])
-		annotation Description = 'Total games played in the current filter context, used as the denominator for pace measures.'
+			SUM(fact_season_stats[games_played])
+			-- annotation Description = 'Total games played in the current filter context, used as the denominator for pace measures.'
+		lineageTag: 71727381-116b-44bb-8aec-b71de607896d
 
 	measure 'Points Per Game' =
-		DIVIDE([Total Points], [Games Played])
-		annotation Description = 'Average points per game, useful for comparing player productivity across seasons or opponents.'
+			DIVIDE([Total Points], [Games Played])
+			-- annotation Description = 'Average points per game, useful for comparing player productivity across seasons or opponents.'
+		lineageTag: 17033bd8-ac0d-43d8-b1f4-8a4feefcc36e
 
 	measure 'Goals Per Game' =
-		DIVIDE([Total Goals], [Games Played])
-		annotation Description = 'Average goals scored per game, useful for player and team scoring efficiency analysis.'
+			DIVIDE([Total Goals], [Games Played])
+			-- annotation Description = 'Average goals scored per game, useful for player and team scoring efficiency analysis.'
+		lineageTag: 5b9bb8bb-34d9-4f4b-95dc-fc757ef217ba
 
 	measure 'Assists Per Game' =
-		DIVIDE([Total Assists], [Games Played])
-		annotation Description = 'Average assists per game, useful for evaluating playmaking output.'
+			DIVIDE([Total Assists], [Games Played])
+			-- annotation Description = 'Average assists per game, useful for evaluating playmaking output.'
+		lineageTag: c15833d2-f783-4735-91a7-e31289a973a9
 
 	measure 'Shots Per Game' =
-		DIVIDE(SUM(fact_season_stats[shots]), [Games Played])
-		annotation Description = 'Average shots per game, useful for comparing offensive volume and shot-generation habits.'
+			DIVIDE(SUM(fact_season_stats[shots]), [Games Played])
+			-- annotation Description = 'Average shots per game, useful for comparing offensive volume and shot-generation habits.'
+		lineageTag: 4cd427b7-2f48-4c3d-9a2b-51fbc55b9e7c
 
 	measure 'Shooting %' =
-		AVERAGE(fact_season_stats[shooting_pctg])
-		annotation Description = 'Average shooting percentage across the filtered player or team season context.'
+			AVERAGE(fact_season_stats[shooting_pctg])
+			-- annotation Description = 'Average shooting percentage across the filtered player or team season context.'
+		lineageTag: 5cf89f5d-43d7-4897-92ff-1379251373cc
 
 	measure 'Skater Total Distance (km)' =
-		SUM(fact_edge_stats_skaters[total_distance_skated_km])
-		annotation Description = 'Total distance skated in kilometers from EDGE skater data. Useful for endurance and workload analysis.'
+			SUM(fact_edge_stats_skaters[total_distance_skated_km])
+			-- annotation Description = 'Total distance skated in kilometers from EDGE skater data. Useful for endurance and workload analysis.'
+		lineageTag: 904f691a-9bec-415a-89ca-94d4d075c38e
 
 	measure 'Max Game Distance (km)' =
-		MAX(fact_edge_stats_skaters[max_game_distance_km])
-		annotation Description = 'Maximum distance skated in a single game, useful for peak workload comparisons.'
+			MAX(fact_edge_stats_skaters[max_game_distance_km])
+			-- annotation Description = 'Maximum distance skated in a single game, useful for peak workload comparisons.'
+		lineageTag: 1501c219-e945-4091-a10b-5b6906c56f6b
 
 	measure 'Top Shot Speed (km/h)' =
-		MAX(fact_edge_stats_skaters[top_shot_speed_kmh])
-		annotation Description = 'Highest observed shot speed in the filtered context, useful for measuring shooting power.'
+			MAX(fact_edge_stats_skaters[top_shot_speed_kmh])
+			-- annotation Description = 'Highest observed shot speed in the filtered context, useful for measuring shooting power.'
+		lineageTag: 11b28b97-911e-49df-bfee-36d2a7d9b864
 
 	measure 'Max Skating Speed (km/h)' =
-		MAX(fact_edge_stats_skaters[max_skating_speed_kmh])
-		annotation Description = 'Maximum skating speed recorded for the selected player or team context.'
+			MAX(fact_edge_stats_skaters[max_skating_speed_kmh])
+			-- annotation Description = 'Maximum skating speed recorded for the selected player or team context.'
+		lineageTag: 6789781e-f6e0-49a9-af4d-4a3bddcca6e6
 
 	measure 'Bursts Over 20 MPH' =
-		SUM(fact_edge_stats_skaters[bursts_over_20mph])
-		annotation Description = 'Total number of high-intensity bursts above 20 mph, useful for intensity and explosiveness analysis.'
+			SUM(fact_edge_stats_skaters[bursts_over_20mph])
+			-- annotation Description = 'Total number of high-intensity bursts above 20 mph, useful for intensity and explosiveness analysis.'
+		lineageTag: 1edbab5e-218d-4a7d-a42b-6279cd020725
 
 	measure 'Offensive Zone %' =
-		AVERAGE(fact_edge_stats_skaters[offensive_zone_pct])
-		annotation Description = 'Average percentage of time spent in the offensive zone, useful for role and deployment analysis.'
+			AVERAGE(fact_edge_stats_skaters[offensive_zone_pct])
+			-- annotation Description = 'Average percentage of time spent in the offensive zone, useful for role and deployment analysis.'
+		lineageTag: 2aad4582-1a55-4ed7-b4b2-dcc1ebee1e91
 
 	measure 'Defensive Zone %' =
-		AVERAGE(fact_edge_stats_skaters[defensive_zone_pct])
-		annotation Description = 'Average percentage of time spent in the defensive zone, useful for assessing defensive responsibilities.'
+			AVERAGE(fact_edge_stats_skaters[defensive_zone_pct])
+			-- annotation Description = 'Average percentage of time spent in the defensive zone, useful for assessing defensive responsibilities.'
+		lineageTag: 88d0f8e9-6fe0-4fb6-85f2-d1126b4b3002
 
 	measure 'Goalie Goal Differential / 60' =
-		AVERAGE(fact_edge_stats_goalies[goal_differential_per_60])
-		annotation Description = 'Average goal differential per 60 minutes for goalies, useful for goaltending efficiency analysis.'
+			AVERAGE(fact_edge_stats_goalies[goal_differential_per_60])
+			-- annotation Description = 'Average goal differential per 60 minutes for goalies, useful for goaltending efficiency analysis.'
+		lineageTag: ab95ba14-7a9e-42da-bc67-be9af98c975a
 
 	measure 'Goalie Point %' =
-		AVERAGE(fact_edge_stats_goalies[point_pctg])
-		annotation Description = 'Average point percentage for goalies, useful for evaluating overall goaltending performance.'
+			AVERAGE(fact_edge_stats_goalies[point_pctg])
+			-- annotation Description = 'Average point percentage for goalies, useful for evaluating overall goaltending performance.'
+		lineageTag: c0a4ac37-3685-4098-a508-30211fc8319a
 
 	measure 'Team Games' =
-		DISTINCTCOUNT(fact_games[id])
-		annotation Description = 'Total number of games in the current team and time filter. Useful for season and team workload analysis.'
+			DISTINCTCOUNT(fact_games[id])
+			-- annotation Description = 'Total number of games in the current team and time filter. Useful for season and team workload analysis.'
+		lineageTag: 18b5a449-d510-4990-a9a3-780ef3470dc0
 
-	measure 'Team Wins' =
-		SUM(fact_games[home_team_score] > fact_games[away_team_score])
-		annotation Description = 'Total wins counted from game results in the current team and date filter.'
+	measure 'Team Wins' = ```
+			
+			CALCULATE(
+			    COUNTROWS(fact_games),
+			    fact_games[home_team_score] > fact_games[away_team_score]
+			)
+			-- annotation Description = 'Total wins counted from game results in the current team and date filter.'
+			
+			```
+		formatString: 0
+		lineageTag: aea56a87-af86-4830-822c-ca56f44b497e
 
-	measure 'Team Losses' =
-		SUM(fact_games[home_team_score] < fact_games[away_team_score])
-		annotation Description = 'Total losses counted from game results in the current team and date filter.'
+	measure 'Team Losses' = ```
+			
+			CALCULATE(
+			    COUNTROWS(fact_games),
+			    fact_games[home_team_score] < fact_games[away_team_score]
+			)
+			-- annotation Description = 'Total wins counted from game results in the current team and date filter.'
+			
+			```
+		formatString: 0
+		lineageTag: 18ac1b07-fa11-46e8-a541-9699e6ccacdc
 
 	measure 'Team Win %' =
-		DIVIDE([Team Wins], [Team Games])
-		annotation Description = 'Win percentage for the selected team and period, useful for standings and performance dashboards.'
+			DIVIDE([Team Wins], [Team Games])
+			-- annotation Description = 'Win percentage for the selected team and period, useful for standings and performance dashboards.'
+		lineageTag: 1160acc4-791b-44c2-98fa-f39b4a761e4f
 
 	measure 'Team Goals For' =
-		SUM(fact_games[home_team_score]) + SUM(fact_games[away_team_score])
-		annotation Description = 'Total goals scored by the selected team across the current game filter context.'
+			SUM(fact_games[home_team_score]) + SUM(fact_games[away_team_score])
+			-- annotation Description = 'Total goals scored by the selected team across the current game filter context.'
+		lineageTag: 3d07292c-2dbd-4aa7-bc0b-539b2b8cd6d1
 
 	measure 'Team Goals Against' =
-		SUM(fact_games[away_team_score]) + SUM(fact_games[home_team_score])
-		annotation Description = 'Total goals conceded by the selected team across the current game filter context.'
+			SUM(fact_games[away_team_score]) + SUM(fact_games[home_team_score])
+			-- annotation Description = 'Total goals conceded by the selected team across the current game filter context.'
+		lineageTag: 4150182b-9ee2-4bdb-b77c-96da0b4e7648
 
 	measure 'Team Goal Differential' =
-		[Team Goals For] - [Team Goals Against]
-		annotation Description = 'Difference between goals scored and goals conceded, useful for team efficiency and form analysis.'
+			[Team Goals For] - [Team Goals Against]
+			-- annotation Description = 'Difference between goals scored and goals conceded, useful for team efficiency and form analysis.'
+		lineageTag: 26e89e4f-f6f7-43ac-8333-efffd8ef4c1e
 
 	measure 'Team Avg Goals For' =
-		DIVIDE([Team Goals For], [Team Games])
-		annotation Description = 'Average goals scored per game, useful for comparing offensive output across teams or seasons.'
+			DIVIDE([Team Goals For], [Team Games])
+			-- annotation Description = 'Average goals scored per game, useful for comparing offensive output across teams or seasons.'
+		lineageTag: 48e8f0b5-434d-4e9e-860f-e23eb061e289
 
 	measure 'Team Avg Goals Against' =
-		DIVIDE([Team Goals Against], [Team Games])
-		annotation Description = 'Average goals conceded per game, useful for identifying defensive strength or weakness.'
+			DIVIDE([Team Goals Against], [Team Games])
+			-- annotation Description = 'Average goals conceded per game, useful for identifying defensive strength or weakness.'
+		lineageTag: 35fca0a4-e2b9-4128-acd4-0002d0f16ca7
 
 	measure 'Home Wins' =
-		CALCULATE([Team Wins], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
-		annotation Description = 'Wins recorded at home for the selected team in the current filter context.'
+			CALCULATE([Team Wins], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+			-- annotation Description = 'Wins recorded at home for the selected team in the current filter context.'
+		lineageTag: 7df7ce8b-1f55-40d1-8bd0-8bef3b43b261
 
 	measure 'Away Wins' =
-		CALCULATE([Team Wins], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
-		annotation Description = 'Wins recorded away from home for the selected team in the current filter context.'
+			CALCULATE([Team Wins], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+			-- annotation Description = 'Wins recorded away from home for the selected team in the current filter context.'
+		lineageTag: 519e7960-8626-4cc1-af38-221ecf4971c8
 
 	measure 'Home Losses' =
-		CALCULATE([Team Losses], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
-		annotation Description = 'Home losses recorded for the selected team in the current filter context.'
+			CALCULATE([Team Losses], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+			-- annotation Description = 'Home losses recorded for the selected team in the current filter context.'
+		lineageTag: 62b7264b-cde8-4762-8c64-ea03cd4085fb
 
 	measure 'Away Losses' =
-		CALCULATE([Team Losses], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
-		annotation Description = 'Away losses recorded for the selected team in the current filter context.'
+			CALCULATE([Team Losses], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+			-- annotation Description = 'Away losses recorded for the selected team in the current filter context.'
+		lineageTag: 1d709edb-72ba-4e76-b40a-2fe4fa6941e3
 
 	measure 'Home Win %' =
-		DIVIDE([Home Wins], [Team Games])
-		annotation Description = 'Home win percentage for the selected team, useful for home-ice performance dashboards.'
+			DIVIDE([Home Wins], [Team Games])
+			-- annotation Description = 'Home win percentage for the selected team, useful for home-ice performance dashboards.'
+		lineageTag: d7433c2e-bcff-42d5-bc0d-cc968576c7f9
 
 	measure 'Away Win %' =
-		DIVIDE([Away Wins], [Team Games])
-		annotation Description = 'Away win percentage for the selected team, useful for road performance dashboards.'
+			DIVIDE([Away Wins], [Team Games])
+			-- annotation Description = 'Away win percentage for the selected team, useful for road performance dashboards.'
+		lineageTag: 196f114e-d804-4457-97d2-569474975428
 
 	measure 'Team Points' =
-		([Team Wins] * 2) + ([Team Losses] * 0)
-		annotation Description = 'Points earned by the selected team using a standard 2 points for a win framework.'
+			([Team Wins] * 2) + ([Team Losses] * 0)
+			-- annotation Description = 'Points earned by the selected team using a standard 2 points for a win framework.'
+		lineageTag: 7b797193-009d-453c-8b16-6f8d21ae4501
+
+	partition _Measures = m
+		mode: import
+		source = #table({}, {})
+

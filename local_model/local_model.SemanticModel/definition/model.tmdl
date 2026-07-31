@@ -9,7 +9,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["dim_date","dim_nhl_teams","fact_edge_stats_goalies","dim_players","fact_edge_stats_goalies_detail","fact_edge_stats_goalies_summary","fact_edge_stats_skaters","fact_edge_stats_skaters_detail","fact_edge_stats_skaters_summary","fact_games","fact_season_stats","fact_player_career_totals"]
+annotation PBI_QueryOrder = ["dim_date","dim_nhl_teams","fact_edge_stats_goalies","dim_players","fact_edge_stats_goalies_detail","fact_edge_stats_goalies_summary","fact_edge_stats_skaters","fact_edge_stats_skaters_detail","fact_edge_stats_skaters_summary","fact_games","fact_season_stats","fact_player_career_totals","_Measures"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
