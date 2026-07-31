@@ -1,0 +1,146 @@
+table _Measures
+	lineageTag: 7f0d0e30-3acd-497f-9342-96521b0b0e4d
+
+	measure "Player Name" =
+		SELECTEDVALUE(dim_players[name], "Unknown")
+		annotation Description = "Returns the display name of the selected player. Useful for player cards and drill-down visuals."
+
+	measure "Player Position" =
+		SELECTEDVALUE(dim_players[position], "Unknown")
+		annotation Description = "Returns the player position such as C, LW, RW, D, or G. Helpful for segmenting performance by role."
+
+	measure "Total Points" =
+		SUM(fact_season_stats[points])
+		annotation Description = "Total points accumulated by the selected player or team across the filtered season context."
+
+	measure "Total Goals" =
+		SUM(fact_season_stats[goals])
+		annotation Description = "Total goals scored by the selected player or team in the current filter context."
+
+	measure "Total Assists" =
+		SUM(fact_season_stats[assists])
+		annotation Description = "Total assists contributed by the selected player or team in the current filter context."
+
+	measure "Games Played" =
+		SUM(fact_season_stats[games_played])
+		annotation Description = "Total games played in the current filter context, used as the denominator for pace measures."
+
+	measure "Points Per Game" =
+		DIVIDE([Total Points], [Games Played])
+		annotation Description = "Average points per game, useful for comparing player productivity across seasons or opponents."
+
+	measure "Goals Per Game" =
+		DIVIDE([Total Goals], [Games Played])
+		annotation Description = "Average goals scored per game, useful for player and team scoring efficiency analysis."
+
+	measure "Assists Per Game" =
+		DIVIDE([Total Assists], [Games Played])
+		annotation Description = "Average assists per game, useful for evaluating playmaking output."
+
+	measure "Shots Per Game" =
+		DIVIDE(SUM(fact_season_stats[shots]), [Games Played])
+		annotation Description = "Average shots per game, useful for comparing offensive volume and shot-generation habits."
+
+	measure "Shooting %" =
+		AVERAGE(fact_season_stats[shooting_pctg])
+		annotation Description = "Average shooting percentage across the filtered player or team season context."
+
+	measure "Skater Total Distance (km)" =
+		SUM(fact_edge_stats_skaters[total_distance_skated_km])
+		annotation Description = "Total distance skated in kilometers from EDGE skater data. Useful for endurance and workload analysis."
+
+	measure "Max Game Distance (km)" =
+		MAX(fact_edge_stats_skaters[max_game_distance_km])
+		annotation Description = "Maximum distance skated in a single game, useful for peak workload comparisons."
+
+	measure "Top Shot Speed (km/h)" =
+		MAX(fact_edge_stats_skaters[top_shot_speed_kmh])
+		annotation Description = "Highest observed shot speed in the filtered context, useful for measuring shooting power."
+
+	measure "Max Skating Speed (km/h)" =
+		MAX(fact_edge_stats_skaters[max_skating_speed_kmh])
+		annotation Description = "Maximum skating speed recorded for the selected player or team context."
+
+	measure "Bursts Over 20 MPH" =
+		SUM(fact_edge_stats_skaters[bursts_over_20mph])
+		annotation Description = "Total number of high-intensity bursts above 20 mph, useful for intensity and explosiveness analysis."
+
+	measure "Offensive Zone %" =
+		AVERAGE(fact_edge_stats_skaters[offensive_zone_pct])
+		annotation Description = "Average percentage of time spent in the offensive zone, useful for role and deployment analysis."
+
+	measure "Defensive Zone %" =
+		AVERAGE(fact_edge_stats_skaters[defensive_zone_pct])
+		annotation Description = "Average percentage of time spent in the defensive zone, useful for assessing defensive responsibilities."
+
+	measure "Goalie Goal Differential / 60" =
+		AVERAGE(fact_edge_stats_goalies[goal_differential_per_60])
+		annotation Description = "Average goal differential per 60 minutes for goalies, useful for goaltending efficiency analysis."
+
+	measure "Goalie Point %" =
+		AVERAGE(fact_edge_stats_goalies[point_pctg])
+		annotation Description = "Average point percentage for goalies, useful for evaluating overall goaltending performance."
+
+	measure "Team Games" =
+		DISTINCTCOUNT(fact_games[id])
+		annotation Description = "Total number of games in the current team and time filter. Useful for season and team workload analysis."
+
+	measure "Team Wins" =
+		SUM(fact_games[home_team_score] > fact_games[away_team_score])
+		annotation Description = "Total wins counted from game results in the current team and date filter."
+
+	measure "Team Losses" =
+		SUM(fact_games[home_team_score] < fact_games[away_team_score])
+		annotation Description = "Total losses counted from game results in the current team and date filter."
+
+	measure "Team Win %" =
+		DIVIDE([Team Wins], [Team Games])
+		annotation Description = "Win percentage for the selected team and period, useful for standings and performance dashboards."
+
+	measure "Team Goals For" =
+		SUM(fact_games[home_team_score]) + SUM(fact_games[away_team_score])
+		annotation Description = "Total goals scored by the selected team across the current game filter context."
+
+	measure "Team Goals Against" =
+		SUM(fact_games[away_team_score]) + SUM(fact_games[home_team_score])
+		annotation Description = "Total goals conceded by the selected team across the current game filter context."
+
+	measure "Team Goal Differential" =
+		[Team Goals For] - [Team Goals Against]
+		annotation Description = "Difference between goals scored and goals conceded, useful for team efficiency and form analysis."
+
+	measure "Team Avg Goals For" =
+		DIVIDE([Team Goals For], [Team Games])
+		annotation Description = "Average goals scored per game, useful for comparing offensive output across teams or seasons."
+
+	measure "Team Avg Goals Against" =
+		DIVIDE([Team Goals Against], [Team Games])
+		annotation Description = "Average goals conceded per game, useful for identifying defensive strength or weakness."
+
+	measure "Home Wins" =
+		CALCULATE([Team Wins], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+		annotation Description = "Wins recorded at home for the selected team in the current filter context."
+
+	measure "Away Wins" =
+		CALCULATE([Team Wins], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+		annotation Description = "Wins recorded away from home for the selected team in the current filter context."
+
+	measure "Home Losses" =
+		CALCULATE([Team Losses], fact_games[home_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+		annotation Description = "Home losses recorded for the selected team in the current filter context."
+
+	measure "Away Losses" =
+		CALCULATE([Team Losses], fact_games[away_team_sk] = VALUES(dim_nhl_teams[team_sk]))
+		annotation Description = "Away losses recorded for the selected team in the current filter context."
+
+	measure "Home Win %" =
+		DIVIDE([Home Wins], [Team Games])
+		annotation Description = "Home win percentage for the selected team, useful for home-ice performance dashboards."
+
+	measure "Away Win %" =
+		DIVIDE([Away Wins], [Team Games])
+		annotation Description = "Away win percentage for the selected team, useful for road performance dashboards."
+
+	measure "Team Points" =
+		([Team Wins] * 2) + ([Team Losses] * 0)
+		annotation Description = "Points earned by the selected team using a standard 2 points for a win framework."

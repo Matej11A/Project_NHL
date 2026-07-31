@@ -25,6 +25,7 @@ ref table fact_edge_stats_skaters_summary
 ref table fact_games
 ref table fact_season_stats
 ref table fact_player_career_totals
+ref table _Measures
 
 ref cultureInfo en-US
 
