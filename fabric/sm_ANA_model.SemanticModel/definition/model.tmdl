@@ -19,10 +19,10 @@ ref table dim_date
 ref table fact_edge_stats_skaters_summary
 ref table dim_players
 ref table fact_edge_stats_goalies_summary
-ref table fact_games
 ref table fact_edge_stats_skaters_detail
 ref table fact_edge_stats_goalies
 ref table fact_edge_stats_goalies_detail
 ref table fact_season_stats
+ref table fact_games
 ref table _Measures
 

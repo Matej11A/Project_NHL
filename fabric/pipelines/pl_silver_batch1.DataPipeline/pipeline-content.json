@@ -1,0 +1,91 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "5e4e5d06-8eb1-9bbf-4428-a620fcc30768",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "3"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "players",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "bbcc8a91-374b-9eed-4e12-15f27d0458a7",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "3"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "career_totals",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "ba27119d-7eb3-b4f3-4eda-a7ccbc8f9d6d",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "3"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "teams",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "32711484-4066-ab8f-4f7d-7fd790bf4804",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "3"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "games",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "c3f9ac7d-86e9-aa42-457b-58bb1022a589",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "3"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "season_stats",
+        "dependsOn": []
+      }
+    ]
+  }
+}

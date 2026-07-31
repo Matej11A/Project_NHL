@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "48d97345-021a-9efb-4e77-3f7ac16a4cb5",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "skaters",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "c3b762ea-9b77-9da1-49f0-0459686c37b4",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "goalies",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "5a7b59bd-3543-85c9-4552-81e74d333400",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "goalies_detail",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "2ebf6fd7-2322-ac85-435a-021abe9f1d24",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "skaters_detail",
+        "dependsOn": []
+      }
+    ]
+  }
+}
