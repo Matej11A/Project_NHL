@@ -16,13 +16,17 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
+# META     },
+# META     "environment": {
+# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
+# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
 
-# CELL ********************
+# PARAMETERS CELL ********************
 
-%pip install nhl-api-py
+ingestion_date = None
 
 # METADATA ********************
 
@@ -45,7 +49,8 @@ client = NHLClient()
 SEASON = "20242025"
 TEAM_ABBR = "ANA"
 
-ingestion_date = date.today().isoformat()
+if ingestion_date is None:
+    ingestion_date = date.today().isoformat()
 
 print(f"1. Fetching {SEASON} roster for {TEAM_ABBR}...")
 roster = client.teams.team_roster(team_abbr=TEAM_ABBR, season=SEASON)
@@ -97,14 +102,6 @@ with open(f"{edge_dir}/_player_meta.json", "w") as f:
     json.dump(fetched_meta, f)
 
 print(f"\nDone - {len(fetched_meta)} skater EDGE profiles fetched")
-
-mssparkutils.notebook.run(
-    "bronze_edge_stats_skaters",
-    600,
-    {"ingestion_date": ingestion_date, "season": SEASON}
-)
-
-
 
 # METADATA ********************
 

@@ -1,0 +1,91 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "4cb7fee2-718b-8826-4df8-233caa038420",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "7"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "games",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "c15f4a81-a1b2-9f41-44cd-2ed54a5cb08b",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "7"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "career_totals",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "540600ab-5a1d-ab2a-4c7b-8403909e1f47",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "7"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_goalies",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "d4daf448-d534-8c2a-4e6c-eeafa25bb214",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "7"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_goalies_summary",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "b242419b-be4b-ae83-4efa-929b752a2066",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "7"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_goalies_detail",
+        "dependsOn": []
+      }
+    ]
+  }
+}

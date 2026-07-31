@@ -1,0 +1,57 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "6a3cd4fd-2d99-89ff-478c-2d1a130d77a1",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "gold_date",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "5b2bf1c0-0558-b2d4-4637-a99f34926526",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "gold_nhl_teams",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "d1c8a3d3-018e-9164-40e8-809df9002f61",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "4"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "gold_players",
+        "dependsOn": []
+      }
+    ]
+  }
+}

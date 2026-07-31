@@ -8,10 +8,14 @@
           "workspaceId": "00000000-0000-0000-0000-000000000000",
           "parameters": {
             "ingestion_date": {
-              "value": "",
+              "value": {
+                "value": "@pipeline().parameters.ingestion_date",
+                "type": "Expression"
+              },
               "type": "string"
             }
-          }
+          },
+          "sessionTag": "2"
         },
         "policy": {
           "timeout": "0.12:00:00",
@@ -22,7 +26,164 @@
         },
         "name": "bronze_teams",
         "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "a16c809c-cc0b-b558-423e-acf03d0db84e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@pipeline().parameters.ingestion_date",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "team_abbr": {
+              "value": "ANA",
+              "type": "string"
+            }
+          },
+          "sessionTag": "2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_players",
+        "dependsOn": [
+          {
+            "activity": "bronze_teams",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "bd3246e7-c6b2-a7d0-42f4-602b322f975e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@pipeline().parameters.ingestion_date",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "season": {
+              "value": "20242025",
+              "type": "string"
+            },
+            "team_abbr": {
+              "value": "ANA",
+              "type": "string"
+            }
+          },
+          "sessionTag": "2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_games",
+        "dependsOn": [
+          {
+            "activity": "bronze_players",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "b51f7504-2b67-82ab-4ad8-c5f0802f6308",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@pipeline().parameters.ingestion_date",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "season": {
+              "value": "20242025",
+              "type": "string"
+            }
+          },
+          "sessionTag": "2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_edge_skaters",
+        "dependsOn": [
+          {
+            "activity": "bronze_games",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "5891fe20-706c-bc88-40d9-3d1ff89ddb5e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@pipeline().parameters.ingestion_date",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "season": {
+              "value": "20242025",
+              "type": "string"
+            }
+          },
+          "sessionTag": "2"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_edge_goalies",
+        "dependsOn": [
+          {
+            "activity": "bronze_edge_skaters",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
       }
-    ]
+    ],
+    "parameters": {
+      "ingestion_date": {
+        "type": "string"
+      }
+    }
   }
 }

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Environment",
+    "displayName": "env_nhl_api",
+    "description": "Environment"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1c9c4c3b-612e-8da1-4689-71c8adda755d"
+  }
+}

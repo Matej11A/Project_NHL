@@ -20,6 +20,20 @@
 # META   }
 # META }
 
+# PARAMETERS CELL ********************
+
+ingestion_date = None
+season = None
+team_abbr = None
+raw_path = None
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 import json
@@ -35,7 +49,7 @@ if season is None:
 if team_abbr is None:
     team_abbr = "ANA"
 if raw_path is None:
-    raw_path = f"/lakehouse/default/Files/raw/games/{SEASON}/{ingestion_date}/schedule.json"
+    raw_path = f"/lakehouse/default/Files/raw/games/{season}/{ingestion_date}/schedule.json"
 
 # METADATA ********************
 

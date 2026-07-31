@@ -16,13 +16,17 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
+# META     },
+# META     "environment": {
+# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
+# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
 
-# CELL ********************
+# PARAMETERS CELL ********************
 
-%pip install nhl-api-py
+ingestion_date = None
 
 # METADATA ********************
 
@@ -43,12 +47,14 @@ import notebookutils.mssparkutils as mssparkutils
 
 client = NHLClient()
 
+if ingestion_date is None:
+    ingestion_date = date.today().isoformat()
+
 TEAM_ABBR = "ANA"
 SEASON = "20242025"
 
 schedule = client.schedule.team_season_schedule(team_abbr=TEAM_ABBR, season=SEASON)
 
-ingestion_date = date.today().isoformat()
 raw_path = f"/lakehouse/default/Files/raw/games/{SEASON}/{ingestion_date}/schedule.json"
 
 os.makedirs(os.path.dirname(raw_path), exist_ok=True)
@@ -56,12 +62,6 @@ with open(raw_path, "w") as f:
     json.dump(schedule, f)
 
 print(f"Wrote raw schedule JSON to {raw_path} ({len(schedule.get('games', []))} games, full season, unfiltered)")
-
-mssparkutils.notebook.run(
-    "bronze_games", 
-    180,
-    {"ingestion_date": ingestion_date, "season": SEASON, "team_abbr": TEAM_ABBR, "raw_path": raw_path}
-)
 
 # METADATA ********************
 

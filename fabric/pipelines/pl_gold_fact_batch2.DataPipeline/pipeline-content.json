@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "edbc83df-b307-8c10-47f5-628ea1a01e4d",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "10"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "season_stats",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "aad5e381-6ece-a005-4c61-eb03a1e1002d",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "10"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_skaters",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "bdc20f7e-9b69-8b8f-449e-b2d9044f13e6",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "10"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_skaters_summary",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "8ce5468d-20d0-8d06-4c41-1e381033bb1f",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "10"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "edge_skaters_detail",
+        "dependsOn": []
+      }
+    ]
+  }
+}

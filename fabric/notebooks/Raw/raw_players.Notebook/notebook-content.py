@@ -16,13 +16,17 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
+# META     },
+# META     "environment": {
+# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
+# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
 
-# CELL ********************
+# PARAMETERS CELL ********************
 
-%pip install nhl-api-py
+ingestion_date = None
 
 # METADATA ********************
 
@@ -50,7 +54,8 @@ seasons  = [
     "20242025"
 ]
 
-ingestion_date = date.today().isoformat()
+if ingestion_date is None:
+    ingestion_date = date.today().isoformat()
 
 roster_dir = f"/lakehouse/default/Files/raw/players/roster/{ingestion_date}"
 os.makedirs(roster_dir, exist_ok=True)
@@ -80,12 +85,6 @@ for player_id in all_player_ids:
         json.dump(raw, f)
 
 print(f"Landed raw JSON for {len(all_player_ids)} players")
-
-mssparkutils.notebook.run(
-    "bronze_players",
-    600,
-    {"ingestion_date": ingestion_date, "team_abbr": TEAM_ABBR}
-)
 
 # METADATA ********************
 
