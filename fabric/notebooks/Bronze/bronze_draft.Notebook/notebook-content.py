@@ -16,10 +16,6 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
-# META     },
-# META     "environment": {
-# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
-# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
@@ -37,26 +33,14 @@ ingestion_date = None
 
 # CELL ********************
 
-from nhlpy import NHLClient
+from pyspark.sql import functions as F
 import json
 import os
 from datetime import date
-import notebookutils.mssparkutils as mssparkutils 
 
-client = NHLClient()
-data = client.teams.teams()
 
 if ingestion_date is None:
     ingestion_date = date.today().isoformat()
-
-raw_path = f"/lakehouse/default/Files/raw/nhl_teams/{ingestion_date}/teams.json"
-
-os.makedirs(os.path.dirname(raw_path), exist_ok=True)
-
-with open (raw_path, "w") as f:
-    json.dump(data, f)
-
-print(f"Wrote raw teams JSON to {raw_path}")
 
 # METADATA ********************
 
@@ -67,7 +51,27 @@ print(f"Wrote raw teams JSON to {raw_path}")
 
 # CELL ********************
 
-print(raw_path)
+raw_dir = f"/lakehouse/default/Files/raw/draft_picks/{ingestion_date}"
+
+rows = []
+for filename in os.listdir(raw_dir):
+    year = filename.replace(".json", "")
+    raw_path = f"{raw_dir}/{filename}"
+
+    with open(raw_path, "r") as f:
+        data = json.load(f)
+
+    for pick in data["picks"]:
+        rows.append({
+            "draft_year": year,
+            "raw_json": json.dumps(pick),  
+            "_raw_file_path": raw_path,
+        })
+
+df_bronze = spark.createDataFrame(rows)
+df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
+df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.dim_draft_picks")
+print(f"Table bronze.dim_draft_picks saved with {df_bronze.count()} rows!")
 
 # METADATA ********************
 

@@ -16,10 +16,6 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
-# META     },
-# META     "environment": {
-# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
-# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
@@ -27,6 +23,7 @@
 # PARAMETERS CELL ********************
 
 ingestion_date = None
+draft_years = None
 
 # METADATA ********************
 
@@ -37,26 +34,18 @@ ingestion_date = None
 
 # CELL ********************
 
-from nhlpy import NHLClient
 import json
 import os
+import requests
 from datetime import date
-import notebookutils.mssparkutils as mssparkutils 
-
-client = NHLClient()
-data = client.teams.teams()
 
 if ingestion_date is None:
     ingestion_date = date.today().isoformat()
 
-raw_path = f"/lakehouse/default/Files/raw/nhl_teams/{ingestion_date}/teams.json"
+if draft_years is None:
+    draft_years = "2026"
 
-os.makedirs(os.path.dirname(raw_path), exist_ok=True)
-
-with open (raw_path, "w") as f:
-    json.dump(data, f)
-
-print(f"Wrote raw teams JSON to {raw_path}")
+years_list = [y.strip() for y in draft_years.split(",")]
 
 # METADATA ********************
 
@@ -67,7 +56,22 @@ print(f"Wrote raw teams JSON to {raw_path}")
 
 # CELL ********************
 
-print(raw_path)
+raw_dir = f"/lakehouse/default/Files/raw/draft_picks/{ingestion_date}"
+os.makedirs(raw_dir, exist_ok=True)
+
+for year in years_list:
+    print(f"Fetching draft picks for {year}...")
+    resp = requests.get(f"https://api-web.nhle.com/v1/draft/picks/{year}/all", timeout=30)
+    resp.raise_for_status()
+    payload = resp.json()
+
+    with open(f"{raw_dir}/{year}.json", "w") as f:
+        json.dump(payload, f)
+
+    n_picks = len(payload.get("picks", []))
+    print(f" {year}: landed {n_picks} picks")
+
+print(f"Done - landed {len(years_list)} year(s) of draft picks to {raw_dir}")
 
 # METADATA ********************
 

@@ -134,6 +134,44 @@ games_inferred.show(1, truncate=False, vertical=True)
 
 # CELL ********************
 
+import json
+
+path = "/lakehouse/default/Files/raw/draft_picks/2026-08-03/2026.json"
+
+with open(path, "r") as f:
+    data = json.load(f)
+
+for key, value in data.items():
+    print(f"{key}: {type(value).__name__}")
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+from pyspark.sql import functions as F
+
+path = "Files/raw/draft_picks/2026-08-03/2026.json"
+
+df = spark.read.option("multiline", "true").json(path)
+
+df.select("picks").printSchema()
+df.select(F.explode("picks").alias("pick")).select("pick.*").show(3, truncate=False, vertical=True)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
 season_rdd = spark.read.table("bronze.dim_players").select("raw_json").rdd.map(lambda row: row["raw_json"])
 season_inferred = spark.read.json(season_rdd)
 season_inferred.printSchema()
@@ -189,6 +227,80 @@ null_rate_check = df_career_totals.select(
 
 print(f"Row count match: {row_count_check}")
 null_rate_check.show()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+import requests
+import json
+
+# 1. Draft prospects by category, for the 2026 season (all 404 — confirmed dead end)
+for category in [1, 2, 3, 4]:
+    url = f"https://api-web.nhle.com/v1/draft/prospects/2026/{category}"
+    category_resp = requests.get(url, timeout=10)
+    print(f"category {category}: status {category_resp.status_code}")
+
+# 2. Re-fetch TOR prospects explicitly under its own variable name
+team_prospects_resp = requests.get("https://api-web.nhle.com/v1/prospects/TOR", timeout=10)
+prospects = team_prospects_resp.json()
+
+# 3. Find McKenna's id
+mckenna_id = None
+for group in ("forwards", "defensemen", "goalies"):
+    for p in prospects.get(group, []):
+        if p["firstName"]["default"] == "Gavin" and p["lastName"]["default"] == "McKenna":
+            mckenna_id = p["id"]
+            print(f"Found id: {mckenna_id}")
+
+if mckenna_id is None:
+    print("Not in TOR's prospects list — worth printing all forward names to check for a spelling/data mismatch")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+search_resp = requests.get(
+    "https://search.d3.nhle.com/api/v1/search/player",
+    params={"culture": "en-us", "limit": 20, "q": "McKenna"},
+    timeout=10
+)
+print(f"status: {search_resp.status_code}")
+print(json.dumps(search_resp.json(), indent=2)[:2000])
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+mckenna_id = "8486067"
+
+url = f"https://api-web.nhle.com/v1/player/{mckenna_id}/landing"
+resp = requests.get(url, timeout=10)
+print(f"status: {resp.status_code}")
+data = resp.json()
+
+print("\nTop-level keys:", list(data.keys()))
+print("\nseasonTotals present:", "seasonTotals" in data)
+
+if "seasonTotals" in data:
+    for season in data["seasonTotals"]:
+        print(season.get("season"), season.get("leagueAbbrev"), season.get("teamName"), 
+              "GP:", season.get("gamesPlayed"), "G:", season.get("goals"), "A:", season.get("assists"))
 
 # METADATA ********************
 

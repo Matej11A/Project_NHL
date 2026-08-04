@@ -16,17 +16,13 @@
 # META           "id": "7fa7e213-3f48-43a9-9854-240338af99f8"
 # META         }
 # META       ]
-# META     },
-# META     "environment": {
-# META       "environmentId": "1c9c4c3b-612e-8da1-4689-71c8adda755d",
-# META       "workspaceId": "00000000-0000-0000-0000-000000000000"
 # META     }
 # META   }
 # META }
 
-# PARAMETERS CELL ********************
+# CELL ********************
 
-ingestion_date = None
+from pyspark.sql import functions as F
 
 # METADATA ********************
 
@@ -37,37 +33,33 @@ ingestion_date = None
 
 # CELL ********************
 
-from nhlpy import NHLClient
-import json
-import os
-from datetime import date
-import notebookutils.mssparkutils as mssparkutils 
+df_silver = spark.read.table("silver.dim_draft_picks")
 
-client = NHLClient()
-data = client.teams.teams()
+df_gold = df_silver.withColumn(
+    "draft_pick_sk",
+    F.xxhash64(F.col("draft_year"), F.col("overall_pick"))
+)
 
-if ingestion_date is None:
-    ingestion_date = date.today().isoformat()
+df_draft_picks = df_gold.select(
+    F.col("draft_pick_sk"),
+    F.col("draft_year"),
+    F.col("first_name"),
+    F.col("last_name"),
+    F.col("amateur_club_name"),
+    F.col("amateur_league"),
+    F.col("country_code"),
+    F.col("height"),
+    F.col("weight"),
+    F.col("team_abbrev"),
+    F.col("team_logo"),
+    F.col("position_code"),
+    F.col("overall_pick"),
+    F.col("round"),
+    F.col("pick_in_round"),
+)
 
-raw_path = f"/lakehouse/default/Files/raw/nhl_teams/{ingestion_date}/teams.json"
-
-os.makedirs(os.path.dirname(raw_path), exist_ok=True)
-
-with open (raw_path, "w") as f:
-    json.dump(data, f)
-
-print(f"Wrote raw teams JSON to {raw_path}")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-print(raw_path)
+df_draft_picks.write.format("delta").mode("overwrite").saveAsTable("gold.dim_draft_picks")
+print(f"Table gold.dim_draft_picks saved with {df_draft_picks.count()} rows!")
 
 # METADATA ********************
 
