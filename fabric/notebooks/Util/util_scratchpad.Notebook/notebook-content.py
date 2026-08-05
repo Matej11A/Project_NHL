@@ -308,3 +308,207 @@ if "seasonTotals" in data:
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+import requests
+import json
+
+mckenna_id = "8486067"
+url = f"https://api-web.nhle.com/v1/player/{mckenna_id}/landing"
+resp = requests.get(url, timeout=10)
+data = resp.json()
+
+# Pull every seasonTotals row for the ambiguous season, full field set
+dupe_candidates = [
+    s for s in data["seasonTotals"]
+    if s.get("season") == 20222023 and s.get("leagueAbbrev") == "WHL"
+]
+
+print(f"Found {len(dupe_candidates)} matching rows\n")
+for i, row in enumerate(dupe_candidates):
+    print(f"--- row {i} ---")
+    print(json.dumps(row, indent=2))
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+import requests
+import json
+
+search_resp = requests.get(
+    "https://search.d3.nhle.com/api/v1/search/player",
+    params={"culture": "en-us", "limit": 20, "q": "McKenna"},
+    timeout=10
+)
+results = search_resp.json()
+print(f"status: {search_resp.status_code}")
+print(f"number of candidates: {len(results)}\n")
+
+for i, candidate in enumerate(results):
+    print(f"--- candidate {i} ---")
+    print(json.dumps(candidate, indent=2))
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+import requests
+import json
+from pyspark.sql import functions as F
+
+POSITION_CODE_MAP = {
+    "LW": "L",
+    "RW": "R",
+    "C": "C",
+    "D": "D",
+    "G": "G",
+}
+
+sample_picks = (
+    spark.read.table("gold.dim_draft_picks")
+    .select("first_name", "last_name", "country_code", "position_code", "overall_pick")
+    .orderBy(F.rand(seed=42))
+    .limit(20)
+    .collect()
+)
+
+def search_player(first_name, last_name):
+    resp = requests.get(
+        "https://search.d3.nhle.com/api/v1/search/player",
+        params={"culture": "en-us", "limit": 20, "q": f"{first_name} {last_name}"},
+        timeout=10,
+    )
+    return resp.json() if resp.status_code == 200 else []
+
+for pick in sample_picks:
+    name = f"{pick.first_name} {pick.last_name}"
+    candidates = search_player(pick.first_name, pick.last_name)
+    expected_position = POSITION_CODE_MAP[pick.position_code]
+
+    active = [c for c in candidates if c.get("active")]
+    tier2 = [
+        c for c in active
+        if c.get("birthCountry") == pick.country_code
+        and c.get("positionCode") == expected_position
+    ]
+
+    print(f"--- pick #{pick.overall_pick}: {name} ({pick.country_code}, {pick.position_code} -> {expected_position}) ---")
+    print(f"  total candidates: {len(candidates)}")
+    print(f"  active candidates: {len(active)}")
+    print(f"  tier2 (active+country+position) candidates: {len(tier2)}")
+    if len(active) == 1:
+        print(f"  -> TIER 1 MATCH: playerId={active[0]['playerId']}")
+    elif len(tier2) == 1:
+        print(f"  -> TIER 2 MATCH: playerId={tier2[0]['playerId']}")
+    else:
+        print(f"  -> UNRESOLVED (needs manual review)")
+    print()
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+draft_rows = (
+    spark.read.table("gold.dim_draft_picks")
+    .filter(F.col("overall_pick").isin(20, 128))
+    .select("overall_pick", "first_name", "last_name", "country_code", "position_code", "height", "weight")
+    .collect()
+)
+
+for row in draft_rows:
+    print(f"--- draft row: pick #{row.overall_pick} {row.first_name} {row.last_name} ---")
+    print(f"  height: {row.height}   weight: {row.weight}\n")
+
+    candidates = search_player(row.first_name, row.last_name)
+    expected_position = POSITION_CODE_MAP[row.position_code]
+    tier2 = [
+        c for c in candidates
+        if c.get("active")
+        and c.get("birthCountry") == row.country_code
+        and c.get("positionCode") == expected_position
+    ]
+    for c in tier2:
+        print(f"  candidate playerId={c['playerId']}: heightInInches={c['heightInInches']} ({c['height']})   weightInPounds={c['weightInPounds']}")
+    print()
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+def height_weight_distance(pick, candidate):
+    return abs(pick.height - candidate["heightInInches"]) + abs(pick.weight - candidate["weightInPounds"])
+
+def resolve_tier3(pick, tier2_candidates, margin_threshold=10):
+    scored = sorted(
+        [(c, height_weight_distance(pick, c)) for c in tier2_candidates],
+        key=lambda pair: pair[1]
+    )
+    best_candidate, best_dist = scored[0]
+
+    if len(scored) == 1:
+        return best_candidate, "tier2_single"
+
+    second_dist = scored[1][1]
+    if (second_dist - best_dist) >= margin_threshold:
+        return best_candidate, f"tier3_closest_match(gap={second_dist - best_dist})"
+
+    return None, "unresolved_ambiguous"
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+for row in draft_rows:
+    candidates = search_player(row.first_name, row.last_name)
+    expected_position = POSITION_CODE_MAP[row.position_code]
+    tier2 = [
+        c for c in candidates
+        if c.get("active")
+        and c.get("birthCountry") == row.country_code
+        and c.get("positionCode") == expected_position
+    ]
+    match, method = resolve_tier3(row, tier2)
+    if match:
+        print(f"pick #{row.overall_pick} {row.first_name} {row.last_name}: playerId={match['playerId']} via {method}")
+    else:
+        print(f"pick #{row.overall_pick} {row.first_name} {row.last_name}: {method}")
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

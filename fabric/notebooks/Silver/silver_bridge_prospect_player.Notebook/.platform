@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "silver_bridge_prospect_player"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dd68f57c-84f9-88c1-4e18-7e1eaec83001"
+  }
+}
