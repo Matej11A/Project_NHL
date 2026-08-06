@@ -23,6 +23,7 @@
 # PARAMETERS CELL ********************
 
 ingestion_date = None
+draft_years = None
 
 # METADATA ********************
 
@@ -38,12 +39,18 @@ import os
 import requests
 import time
 from datetime import date
+from pyspark.sql import functions as F
 
 if ingestion_date is None:
     ingestion_date = date.today().isoformat()
+if draft_years is None:
+    draft_years = "2026"
+
+years_list = [y.strip() for y in draft_years.split(",")]
 
 draft_picks = (
     spark.read.table("gold.dim_draft_picks")
+    .filter(F.col("draft_year").isin(years_list))
     .select("draft_year", "overall_pick", "first_name", "last_name")
     .collect()
 )

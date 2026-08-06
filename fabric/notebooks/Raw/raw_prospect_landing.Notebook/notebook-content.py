@@ -23,6 +23,7 @@
 # PARAMETERS CELL ********************
 
 ingestion_date = None
+draft_years = None
 
 # METADATA ********************
 
@@ -42,10 +43,15 @@ from datetime import date
 
 if ingestion_date is None:
     ingestion_date = date.today().isoformat()
+if draft_years is None:
+    draft_years = "2026"
+
+years_list = [y.strip() for y in draft_years.split(",")]
 
 resolved_players = (
     spark.read.table("silver.bridge_prospect_player")
     .filter(F.col("player_id").isNotNull())
+    .filter(F.col("draft_year").isin(years_list))
     .select("player_id")
     .distinct()
     .collect()

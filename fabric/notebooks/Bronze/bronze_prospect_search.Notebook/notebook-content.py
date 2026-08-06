@@ -60,8 +60,21 @@ for filename in os.listdir(raw_dir):
 
 df_bronze = spark.createDataFrame(rows)
 df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
-df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.dim_prospect_search")
-print(f"Table bronze.dim_prospect_search saved with {df_bronze.count()} rows!")
+
+if not spark.catalog.tableExists("bronze.dim_prospect_search"):
+    df_bronze.write.format("delta").saveAsTable("bronze.dim_prospect_search")
+    print(f"Created bronze.dim_prospect_search with {df_bronze.count()} rows")
+else:
+    spark.conf.set("spark.databricks.delta.schema.autoMerge.enabled", "true")
+    df_bronze.createOrReplaceTempView("new_prospect_search")
+    spark.sql("""
+        MERGE INTO bronze.dim_prospect_search AS target
+        USING new_prospect_search AS source
+        ON target.draft_year = source.draft_year AND target.overall_pick = source.overall_pick
+        WHEN MATCHED THEN UPDATE SET *
+        WHEN NOT MATCHED THEN INSERT *
+    """)
+    print(f"Merged {df_bronze.count()} rows into bronze.dim_prospect_search")
 
 
 # METADATA ********************

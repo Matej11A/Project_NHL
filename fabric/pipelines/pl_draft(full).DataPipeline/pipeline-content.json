@@ -1,0 +1,384 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "07878475-f351-929d-4bb2-d75efe191f23",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "draft_years": {
+              "value": {
+                "value": "@pipeline().parameters.draft_years",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "raw_draft",
+        "dependsOn": [
+          {
+            "activity": "Set_ingestion_date",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "c6e53a97-fc2f-95b1-49ee-ed201d945f3d",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_draft",
+        "dependsOn": [
+          {
+            "activity": "raw_draft",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "dec9aa73-140f-8f82-4d32-e08d0e462ad2",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "silver_draft_picks",
+        "dependsOn": [
+          {
+            "activity": "bronze_draft",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "485d580f-7a46-b864-4a67-c32bb3e0ffbe",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "gold_dim_draft_picks",
+        "dependsOn": [
+          {
+            "activity": "silver_draft_picks",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "1087012b-8ea9-9ea2-4f89-7612a6e5e924",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "draft_years": {
+              "value": {
+                "value": "@pipeline().parameters.draft_years",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "raw_prospect_search",
+        "dependsOn": [
+          {
+            "activity": "gold_dim_draft_picks",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "3fa8cf6e-7c42-ab92-4328-5ad082278e64",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_prospect_search",
+        "dependsOn": [
+          {
+            "activity": "raw_prospect_search",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "dd68f57c-84f9-88c1-4e18-7e1eaec83001",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": "",
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "silver_bridge_prospect_player",
+        "dependsOn": [
+          {
+            "activity": "bronze_prospect_search",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "fd1274de-76b7-939f-412b-0c5a05736f01",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "draft_years": {
+              "value": {
+                "value": "@pipeline().parameters.draft_years",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "raw_prospect_landing",
+        "dependsOn": [
+          {
+            "activity": "silver_bridge_prospect_player",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "1f2c5522-5292-b5e6-4da0-5e09bc46a90c",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "gold_fact_prospect_season_totals",
+        "dependsOn": [
+          {
+            "activity": "silver_prospect_season_totals",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "81dec216-3f39-bb70-433a-28517649d866",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": {
+                "value": "@variables('v_ingestion_date')",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "bronze_prospect_landing",
+        "dependsOn": [
+          {
+            "activity": "raw_prospect_landing",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "4d3f4f47-1248-8584-4ab7-911d41f7da32",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "ingestion_date": {
+              "value": "",
+              "type": "string"
+            }
+          },
+          "sessionTag": "1"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "silver_prospect_season_totals",
+        "dependsOn": [
+          {
+            "activity": "bronze_prospect_landing",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SetVariable",
+        "typeProperties": {
+          "variableName": "v_ingestion_date",
+          "value": {
+            "value": "@formatDateTime(utcNow(), 'yyyy-MM-dd')",
+            "type": "Expression"
+          }
+        },
+        "policy": {
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Set_ingestion_date",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "draft_years": {
+        "type": "string",
+        "defaultValue": "2026"
+      }
+    },
+    "variables": {
+      "v_ingestion_date": {
+        "type": "String"
+      }
+    }
+  }
+}

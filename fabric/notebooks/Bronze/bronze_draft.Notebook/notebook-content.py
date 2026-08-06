@@ -64,14 +64,29 @@ for filename in os.listdir(raw_dir):
     for pick in data["picks"]:
         rows.append({
             "draft_year": year,
-            "raw_json": json.dumps(pick),  
+            "overall_pick": pick.get("overallPick"),
+            "raw_json": json.dumps(pick),
             "_raw_file_path": raw_path,
         })
 
 df_bronze = spark.createDataFrame(rows)
 df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
-df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.dim_draft_picks")
-print(f"Table bronze.dim_draft_picks saved with {df_bronze.count()} rows!")
+
+if not spark.catalog.tableExists("bronze.dim_draft_picks"):
+    df_bronze.write.format("delta").saveAsTable("bronze.dim_draft_picks")
+    print(f"Created bronze.dim_draft_picks with {df_bronze.count()} rows")
+else:
+    spark.conf.set("spark.databricks.delta.schema.autoMerge.enabled", "true")
+    df_bronze.createOrReplaceTempView("new_draft_picks")
+    spark.sql("""
+        MERGE INTO bronze.dim_draft_picks AS target
+        USING new_draft_picks AS source
+        ON target.draft_year = source.draft_year AND target.overall_pick = source.overall_pick
+        WHEN MATCHED THEN UPDATE SET *
+        WHEN NOT MATCHED THEN INSERT *
+    """)
+    print(f"Merged {df_bronze.count()} rows into bronze.dim_draft_picks")
+
 
 # METADATA ********************
 

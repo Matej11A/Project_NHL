@@ -59,8 +59,21 @@ for filename in os.listdir(raw_dir):
 
 df_bronze = spark.createDataFrame(rows)
 df_bronze = df_bronze.withColumn("_ingested_at", F.current_timestamp())
-df_bronze.write.format("delta").mode("overwrite").saveAsTable("bronze.fact_prospect_season_totals")
-print(f"Table bronze.fact_prospect_season_totals saved with {df_bronze.count()} rows!")
+
+if not spark.catalog.tableExists("bronze.fact_prospect_season_totals"):
+    df_bronze.write.format("delta").saveAsTable("bronze.fact_prospect_season_totals")
+    print(f"Created bronze.fact_prospect_season_totals with {df_bronze.count()} rows")
+else:
+    spark.conf.set("spark.databricks.delta.schema.autoMerge.enabled", "true")
+    df_bronze.createOrReplaceTempView("new_prospect_landing")
+    spark.sql("""
+        MERGE INTO bronze.fact_prospect_season_totals AS target
+        USING new_prospect_landing AS source
+        ON target.player_id = source.player_id
+        WHEN MATCHED THEN UPDATE SET *
+        WHEN NOT MATCHED THEN INSERT *
+    """)
+    print(f"Merged {df_bronze.count()} rows into bronze.fact_prospect_season_totals")
 
 
 # METADATA ********************
