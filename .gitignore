@@ -3,3 +3,6 @@ __pycache__/
 *.csv
 .claude
 .vscode
+.mcp.json
+.playwright-mcp
+.vscode
