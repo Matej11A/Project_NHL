@@ -1,0 +1,218 @@
+table _measures
+	lineageTag: 88268a4e-0bc9-4879-a2e7-6f06283b2198
+
+	measure flag = KlausFolz.CountryFlags.GetFlagWithISO3(SELECTEDVALUE('dim_draft_picks'[country_code]))
+		lineageTag: 11518f2b-52aa-4c0d-a77e-57307901de58
+		dataCategory: ImageUrl
+
+	measure 'overall pick' = "Overall #" & SELECTEDVALUE('dim_draft_picks'[overall_pick]) & " (" & SELECTEDVALUE('dim_draft_picks'[round]) & ")"
+		lineageTag: c4f30841-5cd1-4cc1-abb9-86bdc589c9c2
+
+	measure 'full name' = SELECTEDVALUE('dim_draft_picks'[first_name]) & " " & SELECTEDVALUE(dim_draft_picks[last_name])
+		lineageTag: 5d02dbf2-1d34-4beb-85f4-ae9d3e86de9f
+
+	measure 'total players' = COUNTROWS('dim_draft_picks') & " " & "players"
+		lineageTag: 66ad3ba1-39c9-4a33-8a67-001ec4eeebb4
+
+	measure 'position code' = SELECTEDVALUE('dim_draft_picks'[position_code])
+		lineageTag: b000fb52-3a1f-4844-ba4e-58ee21212dac
+
+	measure height = ROUND(SELECTEDVALUE('dim_draft_picks'[height cm]),0) & " cm"
+		lineageTag: 15d7744e-e8f0-4ead-83b2-f072a4c35192
+
+	measure weight = ROUND(SELECTEDVALUE('dim_draft_picks'[weight kg]), 0) & " kg"
+		lineageTag: 67154c36-fbe5-42fd-96c2-35eb92d02923
+
+	measure 'birth city' = SELECTEDVALUE('fact_prospect_season_totals'[birth_city])
+		lineageTag: 23264350-ca66-460b-bab0-5c8ed3ca0b80
+
+	measure shoots = SELECTEDVALUE('fact_prospect_season_totals'[shoots_catches])
+		lineageTag: 40455838-f21d-4046-97a5-7ed70b38ca4d
+
+	measure 'birth date' = FORMAT(DATEVALUE(SELECTEDVALUE('fact_prospect_season_totals'[birth_date])), "dd-MMM-yyyy") & " (" & INT(YEARFRAC(DATEVALUE(SELECTEDVALUE('fact_prospect_season_totals'[birth_date])), TODAY())) & ")"
+		lineageTag: 72116501-f1e5-471d-ba70-947794e4e755
+
+	measure _points = SUM('fact_prospect_season_totals'[points])
+		formatString: 0
+		lineageTag: d4381d04-0ed9-4a1d-9dd8-cc60998acb59
+
+	measure Age = ```
+			INT(YEARFRAC(DATEVALUE(SELECTEDVALUE('fact_prospect_season_totals'[birth_date])), TODAY()))
+			
+			```
+		formatString: 0
+		lineageTag: a4f041a5-d5f1-425b-b1de-56735d71b985
+
+	measure 'Selected Conference' = ```
+			
+			IF(
+			    ISFILTERED('dim_nhl_teams'[conference_name]),
+			    CONCATENATEX(VALUES('dim_nhl_teams'[conference_name]), 'dim_nhl_teams'[conference_name], " . "), 
+			    " "
+			)
+			```
+		lineageTag: 3d4e1b78-fff3-4ebe-bd30-ff60ce750c5b
+
+	measure 'Selected Division' = ```
+			
+			IF(
+			    ISFILTERED('dim_nhl_teams'[division_name]),
+			    CONCATENATEX(VALUES('dim_nhl_teams'[division_name]), 'dim_nhl_teams'[division_name], " . "), 
+			    " "
+			)
+			```
+		lineageTag: ca216a31-2a58-4649-8bf4-eabd27dbe166
+
+	measure 'Selected Round' = ```
+			
+			IF(
+			    ISFILTERED('dim_draft_picks'[round]),
+			    CONCATENATEX(VALUES('dim_draft_picks'[round]), 'dim_draft_picks'[round], " . "), 
+			    " "
+			)
+			```
+		lineageTag: d373dbe5-5901-4ea9-a14a-9ad4d43abdc5
+
+	measure Filters = ```
+			
+			
+			    [Selected Conference] & "  " &
+			    [Selected Division] & "  " &
+			    [Selected Round]
+			```
+		lineageTag: 2add3dec-f119-436d-b3af-78c8ac64fbd7
+
+	measure logo = ```
+			
+			CALCULATE(
+			    IF(
+			        SELECTEDVALUE('dim_draft_picks'[full_name]) = BLANK(), 
+			        " ",
+			        SELECTEDVALUE('dim_nhl_teams'[logo])
+			    ),
+			    CROSSFILTER(
+			        'dim_draft_picks'[team_abbrev], 
+			        'dim_nhl_teams'[abbr],
+			        Both
+			    )
+			)
+			```
+		lineageTag: 6ff8f138-1c37-41d8-979f-49157ef96a88
+		dataCategory: ImageUrl
+
+	measure GP = SUM('fact_prospect_season_totals'[games_played])
+		formatString: 0
+		lineageTag: 21b87776-851f-4994-97a9-87032fa9d860
+
+	measure 'G / W' =
+			IF(
+			        SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			        SUM('fact_prospect_season_totals'[wins]),
+			        SUM('fact_prospect_season_totals'[goals])
+			)
+		formatString: 0
+		lineageTag: b74cd76c-e16a-41a8-aae4-8ebb4526c8f7
+
+	measure 'A / L' =
+			IF(
+			    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			    SUM('fact_prospect_season_totals'[losses]),
+			    SUM('fact_prospect_season_totals'[assists])
+			)
+		formatString: 0
+		lineageTag: 7b52f59c-1bca-4f7f-b094-35d8d285d181
+
+	measure PTS = SUM('fact_prospect_season_totals'[points])
+		formatString: 0
+		lineageTag: db5159d5-d716-4982-abf0-c61becfe223f
+
+	measure 'Show Skater Table' = ```
+			
+			VAR pos = SELECTEDVALUE('dim_draft_picks'[position_code])
+			RETURN IF(pos <> "G", 1, 0)
+			
+			```
+		formatString: 0
+		lineageTag: 95221723-2cd0-46fe-b126-ee1b1b4b8163
+
+	measure 'Show Goalie Table' = ```
+			
+			VAR pos = SELECTEDVALUE('dim_draft_picks'[position_code])
+			RETURN IF(pos = "G", 1, 0)
+			
+			```
+		formatString: 0
+		lineageTag: 21d0c3de-9d77-4e88-9e64-255fb713aec0
+
+	measure 'PTS / GAA' =
+			IF(
+			    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			    SUM('fact_prospect_season_totals'[goals_against_avg]),
+			    SUM('fact_prospect_season_totals'[points])
+			)
+		lineageTag: 19d84a33-7b72-4352-8600-8ed474e5f9a7
+
+		formatStringDefinition =
+				IF(
+				    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+				    "0.00",
+				    "#,##0"
+				)
+
+	measure '+|- / SV%' =
+			IF(
+			    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			    SUM('fact_prospect_season_totals'[save_pctg]),
+			    SUM('fact_prospect_season_totals'[plus_minus])
+			)
+		lineageTag: 62538a7e-0a4f-4de5-92c9-6a23ce8a7d18
+
+		formatStringDefinition = ```
+				
+				IF(
+				    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+				    "0.0%",
+				    "+0;-0;0"
+				)
+				
+				```
+
+	measure 'PTS/GAA Format' = ```
+			
+			IF(
+			    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			    "0.00",
+			    "#,##0"
+			)
+			
+			```
+		lineageTag: ccfdb2af-7053-4f24-a88b-5e6255b00184
+
+	measure Type = ```
+			SWITCH(
+			    TRUE(), 
+			    SELECTEDVALUE('fact_prospect_season_totals'[game_type_id]) = 2, "Regular Season",
+			    SELECTEDVALUE('fact_prospect_season_totals'[game_type_id]) = 3, "Playoff"
+			)
+			```
+		lineageTag: 7dfb7af4-989b-480d-b636-42098a78208f
+
+	measure placeholder = " "
+		lineageTag: cfd7c8d5-d34e-46ab-b977-b4f297091b4f
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: b2cb629a-c9ef-4b8b-8684-eedc69a6c4a1
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = ab427b70b6d9453d8aeaf686c6f00591
+

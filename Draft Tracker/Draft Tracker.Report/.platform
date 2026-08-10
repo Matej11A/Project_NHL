@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Draft Tracker"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "35d271f1-8deb-4984-873c-db6255142d90"
+  }
+}

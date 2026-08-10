@@ -1,0 +1,73 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 96,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 514,
+            "y": 198.375
+          },
+          "nodeIndex": "dim_draft_picks",
+          "nodeLineageTag": "408cbc3d-446c-40f6-9cce-ce68d74f7540",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 64,
+            "y": 30.375
+          },
+          "nodeIndex": "fact_prospect_season_totals",
+          "nodeLineageTag": "0485c594-5c22-4846-a41c-d0b51943a3c1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 959,
+            "y": 167.375
+          },
+          "nodeIndex": "dim_nhl_teams",
+          "nodeLineageTag": "2a4c0171-a7ce-46fe-84bc-8d821e400083",
+          "size": {
+            "height": 323,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1179,
+            "y": 150.875
+          },
+          "nodeIndex": "_measures",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

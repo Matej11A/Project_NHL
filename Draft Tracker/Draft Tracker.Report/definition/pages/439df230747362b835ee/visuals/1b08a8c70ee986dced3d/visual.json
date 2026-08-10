@@ -1,0 +1,89 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1b08a8c70ee986dced3d",
+  "position": {
+    "x": 508.75,
+    "y": 433.75,
+    "z": 26000,
+    "height": 286.25,
+    "width": 463.75,
+    "tabOrder": 25000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_prospect_season_totals"
+                    }
+                  },
+                  "Property": "season"
+                }
+              },
+              "queryRef": "fact_prospect_season_totals.season",
+              "nativeQueryRef": "season"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_prospect_season_totals"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "fact_prospect_season_totals.team_name",
+              "nativeQueryRef": "team_name"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_prospect_season_totals"
+                        }
+                      },
+                      "Property": "wins"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_prospect_season_totals.wins)",
+              "nativeQueryRef": "Sum of wins"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_prospect_season_totals"
+                  }
+                },
+                "Property": "season"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "isHidden": true
+}

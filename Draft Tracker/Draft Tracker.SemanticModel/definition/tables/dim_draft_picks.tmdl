@@ -1,0 +1,181 @@
+table dim_draft_picks
+	lineageTag: 408cbc3d-446c-40f6-9cce-ce68d74f7540
+
+	column draft_pick_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: deeb940f-af36-4d7c-9987-b0ba139ffe9a
+		summarizeBy: none
+		sourceColumn: draft_pick_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column draft_year
+		dataType: string
+		lineageTag: 25542845-8c5d-4eb4-93a6-06fdff56acb9
+		summarizeBy: none
+		sourceColumn: draft_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: 0042c787-c672-455a-adbe-d418d9b015f2
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: e1222d35-27f6-41cf-aa19-e361f2533599
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column amateur_club_name
+		dataType: string
+		lineageTag: d1702c14-462b-4736-9248-ad7c18ba5a79
+		summarizeBy: none
+		sourceColumn: amateur_club_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column amateur_league
+		dataType: string
+		lineageTag: 7d47da76-3521-4614-a286-758b98af07c1
+		summarizeBy: none
+		sourceColumn: amateur_league
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_code
+		dataType: string
+		lineageTag: 4631b818-bb8f-4ba5-818c-ea94d4a9ee4b
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column height
+		dataType: int64
+		formatString: 0
+		lineageTag: 53e3e04c-b325-4ed1-990c-076ebca4a189
+		summarizeBy: none
+		sourceColumn: height
+
+		annotation SummarizationSetBy = User
+
+	column weight
+		dataType: int64
+		formatString: 0
+		lineageTag: 259337ab-c4a4-4fc2-b6c5-6177414230b0
+		summarizeBy: none
+		sourceColumn: weight
+
+		annotation SummarizationSetBy = User
+
+	column team_abbrev
+		dataType: string
+		lineageTag: 84b6ae4d-d810-4b7a-b604-5c24d8eac3cf
+		summarizeBy: none
+		sourceColumn: team_abbrev
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_logo
+		dataType: string
+		lineageTag: c87c425e-c08e-4a92-8ffa-8224a845a7eb
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: team_logo
+
+		annotation SummarizationSetBy = Automatic
+
+	column position_code
+		dataType: string
+		lineageTag: f9bcbdfc-e74c-4f7b-b27b-542bee64a916
+		summarizeBy: none
+		sourceColumn: position_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column overall_pick
+		dataType: int64
+		formatString: 0
+		lineageTag: c6a24b08-1157-4080-b5bb-077593e3f1f9
+		summarizeBy: none
+		sourceColumn: overall_pick
+
+		annotation SummarizationSetBy = User
+
+	column round
+		dataType: int64
+		formatString: 0
+		lineageTag: da358647-3967-4903-8994-071fb4b0ac98
+		summarizeBy: none
+		sourceColumn: round
+
+		annotation SummarizationSetBy = User
+
+	column pick_in_round
+		dataType: int64
+		formatString: 0
+		lineageTag: 66a1cd2a-f357-480f-bf22-1a6eee86d69f
+		summarizeBy: none
+		sourceColumn: pick_in_round
+
+		annotation SummarizationSetBy = User
+
+	column full_name = ```
+			dim_draft_picks[overall_pick] & " " & dim_draft_picks[first_name] & " " & dim_draft_picks[last_name] 
+			```
+		lineageTag: 262b146a-7067-40eb-b7bd-1f0f94fcf523
+		summarizeBy: none
+		sortByColumn: overall_pick
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column position_team = dim_draft_picks[position_code] & " · " & dim_draft_picks[team_abbrev]
+		lineageTag: abf798af-e365-4dff-b553-e359f2043136
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'height cm' = 'dim_draft_picks'[height] * 2.54
+		formatString: 0
+		lineageTag: 888ddb5f-d850-45fc-8f1a-fef022d30ff4
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'weight kg' = ```
+			DIVIDE('dim_draft_picks'[weight], 2.205) 
+			```
+		formatString: 0
+		lineageTag: 6eed753c-780c-49c0-bc80-5cbd8f0b6584
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition dim_draft_picks = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("tgsruo7xnsiurjas6ylefnhuky-mvw54tkkjehetck2me7drwtxla.datawarehouse.fabric.microsoft.com"),
+				    lh_Main = Source{[Name="lh_Main"]}[Data],
+				    gold_dim_draft_picks = lh_Main{[Schema="gold",Item="dim_draft_picks"]}[Data]
+				in
+				    gold_dim_draft_picks
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

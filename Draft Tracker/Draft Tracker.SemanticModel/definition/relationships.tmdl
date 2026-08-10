@@ -1,0 +1,8 @@
+relationship AutoDetected_2ea805f7-3acc-4b8d-a5ae-f4936fbfb5cf
+	fromColumn: fact_prospect_season_totals.draft_pick_sk
+	toColumn: dim_draft_picks.draft_pick_sk
+
+relationship b7f1c193-d014-d2e2-bfa2-71305de86bbe
+	fromColumn: dim_draft_picks.team_abbrev
+	toColumn: dim_nhl_teams.abbr
+

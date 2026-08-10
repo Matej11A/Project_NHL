@@ -128,14 +128,20 @@ Both groups live in one unified schema; each row is simply `null` for whichever 
 
 `teamName` is nested (`{"default": "..."}`), same pattern as `firstName`/`lastName` elsewhere in the project. A sibling field, `teamCommonName` (same locale-variant shape), was found but deliberately not captured — `teamName.default` is sufficient and consistent with how team names are handled elsewhere.
 
+### Bio columns: `birth_date`, `birth_city`, `shoots_catches`
+
+Three player-bio fields — `birthDate` (plain string), `birthCity` (nested, `{"default": "..."}`, same locale pattern as `teamName`), `shootsCatches` (plain string, `"L"`/`"R"`) — are pulled from the same top-level landing payload as `seasonTotals`, via `get_json_object` on `raw_json` rather than a `from_json`/`StructType` parse, since they're single scalars rather than an array needing drift-checking.
+
+These are **per-player**, not per-season, but live on `silver`/`gold.fact_prospect_season_totals` anyway (added 2026-08-07) rather than a dimension table — a deliberate denormalization, consistent with how `dim_draft_picks` already keeps plain descriptive columns (`team_abbrev`) with no backing dimension. Extracted once per player before the `seasonTotals` explode, so each value repeats across every season row for that player (~14 rows/player) rather than needing a separate join back in.
+
 ### Pipeline
 
 | Layer | Notebook | Table | Notes |
 |---|---|---|---|
 | Raw | `raw_prospect_landing` | `Files/raw/prospect_landing/{ingestion_date}/{player_id}.json` | One file per **resolved** player only (`bridge_prospect_player.player_id IS NOT NULL`), deduplicated |
-| Bronze | `bronze_prospect_landing` | `bronze.fact_prospect_season_totals` | One row per player, `raw_json` holds the **entire** landing payload (bio, awards, `draftDetails`, `seasonTotals` all together) |
-| Silver | *(prospect season totals)* | `silver.fact_prospect_season_totals` | `seasonTotals` extracted via `get_json_object` before parsing/drift-checking, so the check stays scoped and doesn't drown in unrelated payload-field noise; exploded to one row per season/league/team/game-type |
-| Gold | `gold_fact_prospect_season_total` | `gold.fact_prospect_season_totals` | 3,172 rows |
+| Bronze | `bronze_prospect_landing` | `bronze.fact_prospect_season_totals` | One row per player, `raw_json` holds the **entire** landing payload (bio, awards, `draftDetails`, `seasonTotals` all together) — bio fields need no Bronze extraction, they're already in `raw_json` |
+| Silver | *(prospect season totals)* | `silver.fact_prospect_season_totals` | `seasonTotals` extracted via `get_json_object` before parsing/drift-checking, so the check stays scoped and doesn't drown in unrelated payload-field noise; exploded to one row per season/league/team/game-type; `birth_date`/`birth_city`/`shoots_catches` extracted alongside and carried through the explode |
+| Gold | `gold_fact_prospect_season_total` | `gold.fact_prospect_season_totals` | 3,172 rows; bio columns passed through as-is; write requires `.option("mergeSchema", "true")` since `mode("overwrite")` alone still enforces schema match against the existing table |
 
 ### Gold relationship model
 
