@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "049f67c02751ec078066",
   "position": {
-    "x": 880.06595218466612,
+    "x": 682.73701566364389,
     "y": 681.681780708986,
     "z": 26003,
     "height": 32.712283594394066,
-    "width": 399.93404781533388,
+    "width": 597.26298433635611,
     "tabOrder": 26003
   },
   "visual": {
@@ -18,6 +18,16 @@
             "paragraphs": [
               {
                 "textRuns": [
+                  {
+                    "value": "Data source: NHL.com (API) ",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#808080"
+                    }
+                  },
+                  {
+                    "value": "\t\t\t"
+                  },
                   {
                     "value": "created by Matej Adamec (https://www.linkedin.com/in/madamec2411/)",
                     "textStyle": {
