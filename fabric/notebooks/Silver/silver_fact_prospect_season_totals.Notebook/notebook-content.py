@@ -96,7 +96,17 @@ df_bronze = spark.read.table("bronze.fact_prospect_season_totals")
 df_extracted = df_bronze.withColumn(
     "season_totals_json",
     F.get_json_object(F.col("raw_json"), "$.seasonTotals")
+).withColumn(
+    "birth_date",
+    F.get_json_object(F.col("raw_json"), "$.birthDate")
+).withColumn(
+    "birth_city",
+    F.get_json_object(F.col("raw_json"), "$.birthCity.default")
+).withColumn(
+    "shoots_catches",
+    F.get_json_object(F.col("raw_json"), "$.shootsCatches")
 )
+
 
 new_fields, missing_fields = check_schema_drift(
     bronze_df=df_extracted,
@@ -125,11 +135,17 @@ df_parsed = df_extracted.withColumn(
 
 df_exploded = df_parsed.select(
     F.col("player_id"),
+    F.col("birth_date"),
+    F.col("birth_city"),
+    F.col("shoots_catches"),
     F.explode(F.col("season_totals")).alias("season_row")
 )
 
 df_silver = df_exploded.select(
     F.col("player_id"),
+    F.col("birth_date"),
+    F.col("birth_city"),
+    F.col("shoots_catches"),
     F.col("season_row.season").alias("season"),
     F.col("season_row.leagueAbbrev").alias("league_abbrev"),
     F.col("season_row.teamName.default").alias("team_name"),

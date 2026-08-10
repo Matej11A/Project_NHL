@@ -44,6 +44,9 @@ df_fact_prospect_season_totals = df_gold.select(
     F.col("prospect_season_sk"),
     F.col("draft_pick_sk"),
     F.col("player_id"),
+    F.col("birth_date"),
+    F.col("birth_city"),
+    F.col("shoots_catches"),
     F.col("season"),
     F.col("league_abbrev"),
     F.col("team_name"),
@@ -71,7 +74,7 @@ df_fact_prospect_season_totals = df_gold.select(
     F.col("time_on_ice"),
 )
 
-df_fact_prospect_season_totals.write.format("delta").mode("overwrite").saveAsTable("gold.fact_prospect_season_totals")
+df_fact_prospect_season_totals.write.format("delta").mode("overwrite").option("mergeSchema", "true").saveAsTable("gold.fact_prospect_season_totals")
 print(f"Table gold.fact_prospect_season_totals saved with {df_fact_prospect_season_totals.count()} rows!")
 
 

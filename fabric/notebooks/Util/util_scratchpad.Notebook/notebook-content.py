@@ -523,3 +523,20 @@ spark.catalog.listTables("gold")
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+row = spark.read.table("bronze.fact_prospect_season_totals").limit(1).collect()[0]
+import json
+data = json.loads(row["raw_json"])
+print("birthDate:", data.get("birthDate"))
+print("birthCity:", data.get("birthCity"))
+print("shootsCatches:", data.get("shootsCatches"))
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
