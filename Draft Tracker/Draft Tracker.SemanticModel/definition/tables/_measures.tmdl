@@ -200,6 +200,23 @@ table _measures
 	measure placeholder = " "
 		lineageTag: cfd7c8d5-d34e-46ab-b977-b4f297091b4f
 
+	measure 'PTS / GAA new' = ```
+			
+			
+			IF(
+			    SELECTEDVALUE('dim_draft_picks'[position_code]) = "G",
+			    DIVIDE(
+			        SUM('fact_prospect_season_totals'[goals_against]),
+			        SUM('fact_prospect_season_totals'[games_played])
+			    ),
+			    SUM('fact_prospect_season_totals'[points])
+			)
+			
+			```
+		lineageTag: f32ed804-6777-47ce-a243-a9ca1f87e84b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Column
 		isHidden
 		formatString: 0

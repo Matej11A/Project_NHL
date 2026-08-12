@@ -42,11 +42,11 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "PTS / GAA"
+                  "Property": "PTS / GAA new"
                 }
               },
-              "queryRef": "_measures.PTS / GAA",
-              "nativeQueryRef": "PTS / GAA"
+              "queryRef": "_measures.PTS / GAA new",
+              "nativeQueryRef": "PTS / GAA new"
             }
           ]
         }
@@ -173,27 +173,6 @@
                 }
               }
             }
-          }
-        }
-      ],
-      "dataPoint": [
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 4,
-                      "Percent": 0.2
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "_measures.PTS / GAA"
           }
         }
       ]
