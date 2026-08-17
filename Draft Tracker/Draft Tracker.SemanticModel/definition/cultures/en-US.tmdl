@@ -7909,6 +7909,69 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "table_measures.birth_date_display": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "birth date display"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "BIRTHDATE": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.height_ft": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "height ft"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "HEIGHT": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.weight_lbs": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "weight lbs"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "WEIGHT": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {

@@ -1,11 +1,11 @@
 # Draft & Prospect Data Architecture
 
-This document describes the design and build of the NHL draft-pick and pre-NHL prospect-history data, added to the SportsIQ medallion lakehouse (Fabric / PySpark). It covers two related but independently-built sources:
+This document describes the design and build of the NHL draft-pick and pre-NHL prospect-history data, added to the project medallion lakehouse (Fabric / PySpark). It covers two related but independently-built sources:
 
 1. **`dim_draft_picks`** — draft-day data for every pick in a given draft year.
 2. **Prospect season history** — pre-NHL playing history (junior, college, international) for drafted players who haven't appeared in an NHL game yet, split into a player-ID resolution layer (`bridge_prospect_player`) and a stats layer (`fact_prospect_season_totals`).
 
-Both follow the project's standard Bronze → Silver → Gold pattern: Bronze stores the raw API response untouched (as a `raw_json` string column plus lineage columns), Silver applies an explicit schema with drift checking, Gold selects final columns and computes surrogate keys.
+Both follow the project's standard Raw → Bronze → Silver → Gold pattern: Raw stores the raw API response untouched, Bronze parses it to a delta table with a `raw_json` string column plus lineage columns, Silver applies an explicit schema with drift checking, Gold selects final columns and computes surrogate keys.
 
 ---
 
@@ -34,14 +34,11 @@ Returns every pick regardless of NHL experience: `round`, `pickInRound`, `overal
 | Silver | `silver_draft_picks` | `silver.dim_draft_picks` | Explicit `StructType`, `check_schema_drift`, snake_case columns |
 | Gold | `gold_draft_picks` | `gold.dim_draft_picks` | `draft_pick_sk = xxhash64(draft_year, overall_pick)` |
 
-### Why `dim_`, not `fact_`
-
-Originally scoped as `fact_draft_picks`. Reclassified to a dimension because a draft-pick row is descriptive (round, pick-in-round, player bio, team) with no additive measures — despite being one row per event, it doesn't aggregate the way a fact table does.
 
 ### Deliberate scope decisions
 
 - **No `team_sk`** — `teamId` is untrustworthy; `team_abbrev` is kept as a plain string column, joined in Power BI directly against `dim_nhl_teams`, same treatment as `fact_season_stats.team_name`.
-- **No `player_sk`** — no reliable player ID in the raw payload (see §2 for how this gap is closed for prospects specifically).
+- **No `player_sk`** — no reliable player ID in the raw payload 
 - **No `dim_date` join** — a draft is a single annual event, not a per-game date; the project's Oct-1 season-representative convention doesn't apply here.
 
 ---
@@ -50,7 +47,7 @@ Originally scoped as `fact_draft_picks`. Reclassified to a dimension because a d
 
 ### The problem
 
-Most drafted players are 1-3+ years from an NHL game, so the existing player/roster pipeline (NHL-only, ANA-scoped) has nothing for them. The draft-pick payload has no `playerId` to look one up with.
+Most drafted players are 1-3+ years from an NHL game, so the existing player/roster pipeline (NHL-only) has nothing for them. The draft-pick payload has no `playerId` to look one up with.
 
 ### Endpoints evaluated
 
@@ -153,7 +150,6 @@ draft_pick_sk = xxhash64(draft_year, overall_pick)
 
 `gold.fact_prospect_season_totals.draft_pick_sk` is computed by joining through `bridge_prospect_player` (which carries `draft_year`/`overall_pick`), giving a real foreign key into `gold.dim_draft_picks` — verified with a left-anti join (0 unmatched rows) rather than assumed. No separate bridge/junction table is needed in the Power BI star schema; the bridge table is a Silver-only implementation detail.
 
-**No `player_sk`** — `gold.dim_player` is scoped to the ANA roster only, and would match essentially none of these prospects. `player_id` is kept as a plain informational string column, same treatment as `team_abbrev` in `dim_draft_picks`.
 
 ### Unresolved/forfeited picks are not represented in this fact table
 
@@ -176,7 +172,3 @@ Prospect season history:
                                               (draft_pick_sk → gold.dim_draft_picks)
 ```
 
-## Known limitations / future work
-
-- **4 picks require manual review** (see table in §2) — no automated path resolves them; a human would need to identify the correct `playerId` some other way and record it in a manual-override mechanism (discussed but not built — would be a small reference table LEFT JOINed in at Silver, taking precedence over the cascade so it survives re-runs).
-- **`margin_threshold=10`** (Tier 2 tiebreak) and the token-matching approach were tuned against the 2026 draft class specifically. A future draft year should re-validate both against real data before trusting them, not assume they generalize.

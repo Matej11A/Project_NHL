@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 480" role="img" aria-label="Draft data pipeline: NHL public APIs land in a Raw zone, get parsed into Bronze Delta tables, cleaned and modeled in Silver, aggregated into business-ready Gold tables by PySpark notebooks orchestrated by a Fabric Data Pipeline, and finally served to the Draft Tracker Power BI report.">
+  <title>Draft Data Pipeline — Medallion Architecture</title>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+      <polygon class="arrow-marker" points="0,0 10,5 0,10" />
+    </marker>
+  </defs>
+
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .mono { font-family: "SF Mono", Consolas, "Cascadia Code", monospace; }
+
+    .bgrect { fill: #ffffff; }
+    .title { font-size: 22px; font-weight: 700; fill: #0f172a; }
+    .subtitle { font-size: 13px; fill: #64748b; }
+    .box { fill: #f8fafc; stroke-width: 2px; }
+    .header { font-size: 14px; font-weight: 700; }
+    .caption { font-size: 11px; fill: #64748b; }
+    .chip { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1px; }
+    .chip-text { font-size: 10px; font-weight: 600; fill: #334155; }
+    .arrow-line { stroke: #94a3b8; stroke-width: 2px; fill: none; }
+    .arrow-marker { fill: #94a3b8; }
+    .arrow-label { font-size: 11px; font-weight: 500; fill: #64748b; }
+    .banner-line { stroke: #94a3b8; stroke-width: 1.5px; }
+    .banner-text { font-size: 12px; font-weight: 500; fill: #475569; }
+    .foot-text { font-size: 11px; fill: #94a3b8; }
+    .sub-icon-text { font-size: 9.5px; fill: #64748b; }
+
+    .layer-source .box { stroke: #475569; }
+    .layer-source .header { fill: #475569; }
+    .layer-source .icon { stroke: #475569; fill: #475569; }
+
+    .layer-raw .box { stroke: #2563eb; }
+    .layer-raw .header { fill: #2563eb; }
+
+    .layer-bronze .box { stroke: #b45309; }
+    .layer-bronze .header { fill: #b45309; }
+
+    .layer-silver .box { stroke: #52525b; }
+    .layer-silver .header { fill: #52525b; }
+
+    .layer-gold .box { stroke: #a16207; }
+    .layer-gold .header { fill: #a16207; }
+
+    .layer-pbi .box { stroke: #0f766e; }
+    .layer-pbi .header { fill: #0f766e; }
+    .layer-pbi .icon { fill: #0f766e; }
+
+    @media (prefers-color-scheme: dark) {
+      .bgrect { fill: #0b1220; }
+      .title { fill: #f1f5f9; }
+      .subtitle { fill: #94a3b8; }
+      .box { fill: #16202e; }
+      .caption { fill: #94a3b8; }
+      .chip { fill: #0f172a; stroke: #334155; }
+      .chip-text { fill: #e2e8f0; }
+      .arrow-line { stroke: #64748b; }
+      .arrow-marker { fill: #64748b; }
+      .arrow-label { fill: #94a3b8; }
+      .banner-line { stroke: #64748b; }
+      .banner-text { fill: #94a3b8; }
+      .foot-text { fill: #64748b; }
+      .sub-icon-text { fill: #94a3b8; }
+
+      .layer-source .box { stroke: #94a3b8; }
+      .layer-source .header { fill: #94a3b8; }
+      .layer-source .icon { stroke: #94a3b8; fill: #94a3b8; }
+
+      .layer-raw .box { stroke: #60a5fa; }
+      .layer-raw .header { fill: #60a5fa; }
+
+      .layer-bronze .box { stroke: #f59e0b; }
+      .layer-bronze .header { fill: #f59e0b; }
+
+      .layer-silver .box { stroke: #a1a1aa; }
+      .layer-silver .header { fill: #a1a1aa; }
+
+      .layer-gold .box { stroke: #fbbf24; }
+      .layer-gold .header { fill: #fbbf24; }
+
+      .layer-pbi .box { stroke: #2dd4bf; }
+      .layer-pbi .header { fill: #2dd4bf; }
+      .layer-pbi .icon { fill: #2dd4bf; }
+    }
+  </style>
+
+  <rect class="bgrect" x="0" y="0" width="1320" height="480" />
+
+  <text class="title" x="660" y="34" text-anchor="middle">Draft Data Pipeline — Medallion Architecture</text>
+  <text class="subtitle" x="660" y="56" text-anchor="middle">How NHL draft picks &amp; prospect stats flow from the public API to the Power BI report, on Microsoft Fabric</text>
+
+  <!-- ===================== SOURCE ===================== -->
+  <g class="layer-source">
+    <rect class="box" x="35" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="115" y="114" text-anchor="middle">SOURCE</text>
+    <text class="caption" x="115" y="136" text-anchor="middle">NHL Public APIs</text>
+    <!-- hub-and-spoke icon -->
+    <line class="icon" x1="115" y1="276" x2="115" y2="244" stroke-width="2" />
+    <line class="icon" x1="115" y1="276" x2="85" y2="296" stroke-width="2" />
+    <line class="icon" x1="115" y1="276" x2="145" y2="296" stroke-width="2" />
+    <circle class="icon" cx="115" cy="276" r="6" stroke="none" />
+    <circle class="box" cx="115" cy="244" r="7" fill="#ffffff" />
+    <circle class="icon" cx="115" cy="244" r="7" stroke-width="2" fill="none" />
+    <circle class="box" cx="85" cy="296" r="7" fill="#ffffff" />
+    <circle class="icon" cx="85" cy="296" r="7" stroke-width="2" fill="none" />
+    <circle class="box" cx="145" cy="296" r="7" fill="#ffffff" />
+    <circle class="icon" cx="145" cy="296" r="7" stroke-width="2" fill="none" />
+    <text class="sub-icon-text" x="115" y="330" text-anchor="middle">Draft &amp; prospect data</text>
+  </g>
+
+  <!-- arrow: source -> raw -->
+  <line class="arrow-line" x1="195" y1="240" x2="245" y2="240" marker-end="url(#arrow)" />
+  <text class="arrow-label" x="222" y="230" text-anchor="middle">ingest</text>
+
+  <!-- ===================== RAW ===================== -->
+  <g class="layer-raw">
+    <rect class="box" x="250" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="330" y="114" text-anchor="middle">RAW · LANDING</text>
+    <text class="caption" x="330" y="136" text-anchor="middle">Land raw JSON files</text>
+
+    <rect class="chip" x="262" y="206" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="330" y="228" text-anchor="middle">raw_draft</text>
+
+    <rect class="chip" x="262" y="258" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="330" y="280" text-anchor="middle">raw_prospect_search</text>
+
+    <rect class="chip" x="262" y="310" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="330" y="332" text-anchor="middle">raw_prospect_landing</text>
+  </g>
+
+  <!-- arrow: raw -> bronze -->
+  <line class="arrow-line" x1="410" y1="240" x2="460" y2="240" marker-end="url(#arrow)" />
+  <text class="arrow-label" x="437" y="230" text-anchor="middle">parse</text>
+
+  <!-- ===================== BRONZE ===================== -->
+  <g class="layer-bronze">
+    <rect class="box" x="465" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="545" y="114" text-anchor="middle">BRONZE</text>
+    <text class="caption" x="545" y="136" text-anchor="middle">Parse JSON → Delta</text>
+
+    <rect class="chip" x="477" y="206" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="545" y="228" text-anchor="middle">bronze_draft</text>
+
+    <rect class="chip" x="477" y="258" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="545" y="280" text-anchor="middle">bronze_prospect_search</text>
+
+    <rect class="chip" x="477" y="310" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="545" y="332" text-anchor="middle">bronze_prospect_landing</text>
+  </g>
+
+  <!-- arrow: bronze -> silver -->
+  <line class="arrow-line" x1="625" y1="240" x2="675" y2="240" marker-end="url(#arrow)" />
+  <text class="arrow-label" x="652" y="230" text-anchor="middle">model</text>
+
+  <!-- ===================== SILVER ===================== -->
+  <g class="layer-silver">
+    <rect class="box" x="680" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="760" y="114" text-anchor="middle">SILVER</text>
+    <text class="caption" x="760" y="136" text-anchor="middle">Clean &amp; resolve IDs</text>
+
+    <rect class="chip" x="692" y="206" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="760" y="228" text-anchor="middle">silver_draft_picks</text>
+
+    <rect class="chip" x="692" y="258" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="760" y="273" text-anchor="middle">silver_bridge_</text>
+    <text class="chip-text mono" x="760" y="286" text-anchor="middle">prospect_player</text>
+
+    <rect class="chip" x="692" y="310" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="760" y="325" text-anchor="middle">silver_fact_prospect_</text>
+    <text class="chip-text mono" x="760" y="338" text-anchor="middle">season_totals</text>
+  </g>
+
+  <!-- arrow: silver -> gold -->
+  <line class="arrow-line" x1="840" y1="240" x2="890" y2="240" marker-end="url(#arrow)" />
+  <text class="arrow-label" x="867" y="230" text-anchor="middle">aggregate</text>
+
+  <!-- ===================== GOLD ===================== -->
+  <g class="layer-gold">
+    <rect class="box" x="895" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="975" y="114" text-anchor="middle">GOLD</text>
+    <text class="caption" x="975" y="136" text-anchor="middle">Business-ready tables</text>
+
+    <rect class="chip" x="907" y="232" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="975" y="254" text-anchor="middle">gold_draft_picks</text>
+
+    <rect class="chip" x="907" y="284" width="136" height="36" rx="6" />
+    <text class="chip-text mono" x="975" y="299" text-anchor="middle">gold_fact_prospect_</text>
+    <text class="chip-text mono" x="975" y="312" text-anchor="middle">season_totals</text>
+  </g>
+
+  <!-- arrow: gold -> power bi -->
+  <line class="arrow-line" x1="1055" y1="240" x2="1105" y2="240" marker-end="url(#arrow)" />
+  <text class="arrow-label" x="1082" y="230" text-anchor="middle">report</text>
+
+  <!-- ===================== POWER BI ===================== -->
+  <g class="layer-pbi">
+    <rect class="box" x="1110" y="80" width="160" height="320" rx="10" />
+    <text class="header" x="1190" y="114" text-anchor="middle">POWER BI</text>
+    <text class="caption" x="1190" y="136" text-anchor="middle">Draft Tracker report</text>
+    <!-- bar chart icon -->
+    <line class="icon" x1="1156" y1="304" x2="1224" y2="304" stroke-width="2" />
+    <rect class="icon" x="1162" y="276" width="14" height="28" rx="2" stroke="none" />
+    <rect class="icon" x="1183" y="262" width="14" height="42" rx="2" stroke="none" />
+    <rect class="icon" x="1204" y="284" width="14" height="20" rx="2" stroke="none" />
+    <text class="sub-icon-text" x="1190" y="330" text-anchor="middle">Client-facing report</text>
+  </g>
+
+  <!-- ===================== ORCHESTRATION BANNER ===================== -->
+  <line class="banner-line" x1="330" y1="400" x2="330" y2="412" />
+  <line class="banner-line" x1="545" y1="400" x2="545" y2="412" />
+  <line class="banner-line" x1="760" y1="400" x2="760" y2="412" />
+  <line class="banner-line" x1="975" y1="400" x2="975" y2="412" />
+  <line class="banner-line" x1="250" y1="412" x2="1055" y2="412" />
+  <text class="banner-text" x="652" y="436" text-anchor="middle">Orchestrated end-to-end by a Fabric Data Pipeline — PySpark notebooks running on Spark compute</text>
+  <text class="foot-text" x="652" y="458" text-anchor="middle">Two passes: draft picks resolve to Gold first, then prospect notebooks look up that year's draft class</text>
+</svg>

@@ -217,6 +217,18 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'height ft' = VAR h = SELECTEDVALUE('dim_draft_picks'[height]) RETURN INT(h / 12) & "'" & MOD(h, 12) & """"
+		lineageTag: fb55d834-7fab-4d0d-a3de-5e1bd2bacc0e
+
+	measure 'weight lbs' = ROUND(SELECTEDVALUE('dim_draft_picks'[weight]), 0) & " lbs"
+		lineageTag: 96e10a14-6c25-4387-92ef-4ef546d6526e
+
+	measure 'birth date display' = FORMAT(DATEVALUE(SELECTEDVALUE('fact_prospect_season_totals'[birth_date])), "MMM dd, yyyy")
+		lineageTag: cc7b8d03-0b54-4443-8f6b-f2b4982067f8
+
+	measure 'drafted by' = "Drafted by " & CALCULATE(SELECTEDVALUE('dim_nhl_teams'[name]), CROSSFILTER('dim_draft_picks'[team_abbrev], 'dim_nhl_teams'[abbr], Both))
+		lineageTag: 5328958b-91f6-4246-a148-874cdbb6765e
+
 	column Column
 		isHidden
 		formatString: 0
